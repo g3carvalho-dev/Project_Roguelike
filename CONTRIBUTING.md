@@ -63,7 +63,7 @@ git checkout -b feature/nome-da-funcionalidade
 1. Certifique-se de que sua branch está atualizada em relação à `develop`:
    ```bash
    git fetch origin
-   git rebase origin/develop
+   git pull origin/develop
    ```
 2. Abra uma Pull Request pela interface do GitHub, descrevendo:
    - **O que** foi implementado ou corrigido.
