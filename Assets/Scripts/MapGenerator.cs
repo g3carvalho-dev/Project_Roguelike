@@ -45,8 +45,18 @@ public class MapGenerator : MonoBehaviour
             for (int x = 0; x < largura; x++)
                 mapa[y, x] = 1;
 
-        // cria uma sala no centro pra testar
-        for (int y = 5; y < 30; y++)
+        // sala de repouso (onde o player começa)
+        for (int y = 2; y < 12; y++)
+            for (int x = 2; x < 22; x++)
+                mapa[y, x] = 0;
+
+        // corredor conectando as salas
+        for (int y = 11; y < 15; y++)
+            for (int x = 10; x < 13; x++)
+                mapa[y, x] = 0;
+
+        // sala principal do jogo
+        for (int y = 14; y < 35; y++)
             for (int x = 5; x < 35; x++)
                 mapa[y, x] = 0;
 

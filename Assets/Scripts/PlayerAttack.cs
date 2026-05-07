@@ -9,7 +9,7 @@ public class Arma
     public TipoArma tipo;
     public float dano;
     public float intervaloAtaque;
-    public GameObject prefabProjetil; // só usado se for Ranged
+    public GameObject prefabProjetil;
 }
 
 public class PlayerAttack : MonoBehaviour
@@ -18,8 +18,15 @@ public class PlayerAttack : MonoBehaviour
     public GameObject prefabProjetil;
     private float timer;
 
+    void Start()
+    {
+        armaAtual = null;
+    }
+
     void Update()
     {
+        if (armaAtual == null) return;
+
         timer -= Time.deltaTime;
 
         if (Input.GetMouseButton(0) && timer <= 0)
@@ -54,24 +61,17 @@ public class PlayerAttack : MonoBehaviour
     void AtaqueMelee(Vector2 direcao)
     {
         Vector2 posicaoGolpe = (Vector2)transform.position + direcao * 1.2f;
-        Debug.Log("Posicao do golpe: " + posicaoGolpe);
-        Debug.Log("Posicao do inimigo: " + GameObject.Find("Inimigo").transform.position);
         Collider2D[] atingidos = Physics2D.OverlapCircleAll(posicaoGolpe, 1f);
-        Debug.Log("Colliders encontrados: " + atingidos.Length);
 
         foreach (Collider2D col in atingidos)
         {
-            Debug.Log("Collider encontrado: " + col.name);
             if (col.CompareTag("Inimigo"))
-            {
                 Debug.Log("Acertou " + col.name + " por " + armaAtual.dano + " de dano!");
-            }
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        // mostra o alcance do melee no editor
         Gizmos.color = Color.red;
         Vector3 mouseMundo = Camera.main != null
             ? Camera.main.ScreenToWorldPoint(Input.mousePosition)
