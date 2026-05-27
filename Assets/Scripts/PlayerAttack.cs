@@ -8,7 +8,9 @@ public class Arma
     public string nome;
     public TipoArma tipo;
     public float dano;
+    public float danoHeavy;
     public float intervaloAtaque;
+    public float intervaloAtaqueHeavy;
     public GameObject prefabProjetil;
 }
 
@@ -16,7 +18,8 @@ public class PlayerAttack : MonoBehaviour
 {
     public Arma armaAtual;
     public GameObject prefabProjetil;
-    private float timer;
+    private float timerLight;
+    private float timerHeavy;
 
     void Start()
     {
@@ -27,25 +30,36 @@ public class PlayerAttack : MonoBehaviour
     {
         if (armaAtual == null) return;
 
-        timer -= Time.deltaTime;
+        timerLight -= Time.deltaTime;
+        timerHeavy -= Time.deltaTime;
 
-        if (Input.GetMouseButton(0) && timer <= 0)
+        if (Input.GetMouseButton(0) && timerLight <= 0)
         {
-            Atacar();
-            timer = armaAtual.intervaloAtaque;
+            Atacar(false);
+            timerLight = armaAtual.intervaloAtaque;
+        }
+
+        if (Input.GetMouseButton(1) && timerHeavy <= 0)
+        {
+            Atacar(true);
+            timerHeavy = armaAtual.intervaloAtaqueHeavy;
         }
     }
 
-    void Atacar()
+    void Atacar(bool pesado)
     {
         Vector3 mouseMundo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseMundo.z = 0;
         Vector2 direcao = (mouseMundo - transform.position).normalized;
 
+        float danoAtual = pesado ? armaAtual.danoHeavy : armaAtual.dano;
+        float alcance = pesado ? 1.8f : 1.2f;
+        float area = pesado ? 1.5f : 1f;
+
         if (armaAtual.tipo == TipoArma.Ranged)
             AtaqueRanged(direcao);
         else
-            AtaqueMelee(direcao);
+            AtaqueMelee(direcao, danoAtual, alcance, area);
     }
 
     void AtaqueRanged(Vector2 direcao)
@@ -58,10 +72,10 @@ public class PlayerAttack : MonoBehaviour
         projetil.GetComponent<Projetil>().Iniciar(direcao);
     }
 
-    void AtaqueMelee(Vector2 direcao)
+    void AtaqueMelee(Vector2 direcao, float dano, float alcance, float area)
     {
-        Vector2 posicaoGolpe = (Vector2)transform.position + direcao * 1.2f;
-        Collider2D[] atingidos = Physics2D.OverlapCircleAll(posicaoGolpe, 1f);
+        Vector2 posicaoGolpe = (Vector2)transform.position + direcao * alcance;
+        Collider2D[] atingidos = Physics2D.OverlapCircleAll(posicaoGolpe, area);
 
         foreach (Collider2D col in atingidos)
         {
@@ -69,7 +83,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 EnemyStats stats = col.GetComponent<EnemyStats>();
                 if (stats != null)
-                    stats.ReceberDano(armaAtual.dano);
+                    stats.ReceberDano(dano);
             }
         }
     }

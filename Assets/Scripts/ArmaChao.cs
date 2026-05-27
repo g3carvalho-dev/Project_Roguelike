@@ -5,9 +5,11 @@ public class ArmaChao : MonoBehaviour
     public string nomeArma;
     public TipoArma tipoArma;
     public float dano = 25f;
+    public float danoHeavy = 50f;
     public float intervaloAtaque = 0.5f;
-
+    public float intervaloAtaqueHeavy = 1f;
     public GameObject prefabArmaChao;
+
     private bool playerPerto = false;
     private PlayerAttack playerAtack;
 
@@ -39,7 +41,6 @@ public class ArmaChao : MonoBehaviour
     {
         if (playerAtack == null) return;
 
-        // se já tem arma, dropa a anterior
         if (playerAtack.armaAtual != null)
         {
             GameObject armaDropada = Instantiate(
@@ -52,16 +53,19 @@ public class ArmaChao : MonoBehaviour
             armaChaoScript.nomeArma = playerAtack.armaAtual.nome;
             armaChaoScript.tipoArma = playerAtack.armaAtual.tipo;
             armaChaoScript.dano = playerAtack.armaAtual.dano;
+            armaChaoScript.danoHeavy = playerAtack.armaAtual.danoHeavy;
             armaChaoScript.intervaloAtaque = playerAtack.armaAtual.intervaloAtaque;
+            armaChaoScript.intervaloAtaqueHeavy = playerAtack.armaAtual.intervaloAtaqueHeavy;
             armaChaoScript.prefabArmaChao = prefabArmaChao;
         }
 
-        // equipa a nova arma
         Arma novaArma = new Arma();
         novaArma.nome = nomeArma;
         novaArma.tipo = tipoArma;
         novaArma.dano = dano;
+        novaArma.danoHeavy = danoHeavy;
         novaArma.intervaloAtaque = intervaloAtaque;
+        novaArma.intervaloAtaqueHeavy = intervaloAtaqueHeavy;
 
         playerAtack.armaAtual = novaArma;
         Debug.Log("Equipou: " + nomeArma);
