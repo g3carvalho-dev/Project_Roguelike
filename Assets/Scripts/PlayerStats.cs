@@ -10,6 +10,9 @@ public class PlayerStats : MonoBehaviour
     public int tentativasMaximas = 3;
     public int tentativasAtuais;
 
+    [Header("Invencibilidade")]
+    public bool invencivel = false;
+
     void Start()
     {
         coracoesAtuais = coracoesMaximos;
@@ -18,6 +21,8 @@ public class PlayerStats : MonoBehaviour
 
     public void ReceberDano()
     {
+        if (invencivel) return;
+
         coracoesAtuais--;
         Debug.Log("Corações: " + coracoesAtuais + "/" + coracoesMaximos);
 
@@ -33,7 +38,6 @@ public class PlayerStats : MonoBehaviour
         if (tentativasAtuais <= 0)
         {
             Debug.Log("Game Over!");
-            // tela de game over depois
         }
         else
         {
