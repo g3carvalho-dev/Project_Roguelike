@@ -34,7 +34,7 @@ public class EnemyAI : MonoBehaviour
                 PlayerStats stats = player.GetComponent<PlayerStats>();
                 if (stats != null)
                 {
-                    stats.ReceberDano(danoContato);
+                    stats.ReceberDano();
                     timerDano = intervaloDano;
                 }
             }

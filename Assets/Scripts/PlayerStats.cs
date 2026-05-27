@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Vida")]
-    public float vidaMaxima = 100f;
-    public float vidaAtual;
+    [Header("Corações")]
+    public int coracoesMaximos = 3;
+    public int coracoesAtuais;
 
     [Header("Tentativas")]
     public int tentativasMaximas = 3;
@@ -12,34 +12,33 @@ public class PlayerStats : MonoBehaviour
 
     void Start()
     {
-        vidaAtual = vidaMaxima;
+        coracoesAtuais = coracoesMaximos;
         tentativasAtuais = tentativasMaximas;
     }
 
-    public void ReceberDano(float dano)
+    public void ReceberDano()
     {
-        vidaAtual -= dano;
-        Debug.Log("Player tomou " + dano + " de dano. Vida: " + vidaAtual);
+        coracoesAtuais--;
+        Debug.Log("Corações: " + coracoesAtuais + "/" + coracoesMaximos);
 
-        if (vidaAtual <= 0)
-            Morrer();
+        if (coracoesAtuais <= 0)
+            PerderTentativa();
     }
 
-    void Morrer()
+    void PerderTentativa()
     {
         tentativasAtuais--;
-        Debug.Log("Player morreu! Tentativas restantes: " + tentativasAtuais);
+        Debug.Log("Tentativas restantes: " + tentativasAtuais);
 
         if (tentativasAtuais <= 0)
         {
             Debug.Log("Game Over!");
-            // aqui vai chamar a tela de game over depois
+            // tela de game over depois
         }
         else
         {
-            // volta ao checkpoint com vida cheia
-            vidaAtual = vidaMaxima;
-            Debug.Log("Voltando ao checkpoint...");
+            coracoesAtuais = coracoesMaximos;
+            Debug.Log("Voltando ao checkpoint com corações cheios!");
         }
     }
 }
