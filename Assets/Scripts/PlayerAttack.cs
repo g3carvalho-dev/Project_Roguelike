@@ -66,7 +66,11 @@ public class PlayerAttack : MonoBehaviour
         foreach (Collider2D col in atingidos)
         {
             if (col.CompareTag("Inimigo"))
-                Debug.Log("Acertou " + col.name + " por " + armaAtual.dano + " de dano!");
+            {
+                EnemyStats stats = col.GetComponent<EnemyStats>();
+                if (stats != null)
+                    stats.ReceberDano(armaAtual.dano);
+            }
         }
     }
 

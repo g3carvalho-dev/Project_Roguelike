@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1944588683829114192}
   - component: {fileID: 5870526272214143999}
   - component: {fileID: 8459510357756347984}
+  - component: {fileID: -5270131869135509625}
   m_Layer: 0
   m_Name: Inimigo
   m_TagString: Inimigo
@@ -174,3 +175,17 @@ MonoBehaviour:
   player: {fileID: 0}
   velocidade: 2
   distanciaDeteccao: 8
+--- !u!114 &-5270131869135509625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5242213071126661387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecfbc91efb21ae54a8a88a25940b66e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 50
+  vidaAtual: 0
