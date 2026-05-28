@@ -22,6 +22,11 @@ public class EnemyStats : MonoBehaviour
     void Morrer()
     {
         Debug.Log(gameObject.name + " morreu!");
+
+        InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
+        if (spawner != null)
+            spawner.InimigoDerrotado();
+
         Destroy(gameObject);
     }
 }

@@ -38,11 +38,18 @@ public class InimigosSpawner : MonoBehaviour
 
     public void InimigoDerrotado()
     {
+        if (salaLimpa) return; 
+
         inimigosMortos++;
+        Debug.Log("Inimigos mortos: " + inimigosMortos + "/" + totalInimigos);
+
         if (inimigosMortos >= totalInimigos)
         {
             salaLimpa = true;
-            Debug.Log("Sala limpa!");
+            if (GameManager.Instance != null)
+                GameManager.Instance.SalaLimpa();
+            else
+                Debug.LogError("GameManager.Instance esta nulo!");
         }
     }
 }
