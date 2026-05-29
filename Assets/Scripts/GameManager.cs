@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,10 +8,13 @@ public class GameManager : MonoBehaviour
     [Header("Progressao")]
     public int salaAtual = 1;
     public int totalSalas = 9;
+    public int checkpointSala = 1;
 
     [Header("Estado")]
     public bool salaLimpa = false;
     public bool minichefeDerrotado = false;
+
+    public GameObject prefabMiniChefe;
 
     void Awake()
     {
@@ -38,12 +42,13 @@ public class GameManager : MonoBehaviour
     {
         if (salaAtual % 3 == 0)
         {
-            Debug.Log("Checkpoint atingido na sala " + salaAtual + "!");
+            checkpointSala = salaAtual;
+            PlayerPrefs.SetInt("Checkpoint", checkpointSala);
+            Debug.Log("Checkpoint salvo na sala " + checkpointSala + "!");
 
-            if (salaAtual % 3 == 0 && salaAtual != 9)
+            if (salaAtual != 9)
                 Debug.Log("Loja disponivel antes do chefe!");
-
-            if (salaAtual == 9)
+            else
                 Debug.Log("Chefe final!");
         }
 
@@ -64,7 +69,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("Avancando para sala " + salaAtual);
     }
 
-    public GameObject prefabMiniChefe;
+    public void VoltarParaCheckpoint()
+    {
+        salaAtual = checkpointSala;
+        salaLimpa = false;
+        minichefeDerrotado = false;
+        Debug.Log("Voltando para checkpoint na sala " + checkpointSala);
+        SceneManager.LoadScene("SampleScene");
+    }
 
     void SpawnarMiniChefe()
     {
@@ -75,14 +87,12 @@ public class GameManager : MonoBehaviour
         }
 
         Vector3 posicao = new Vector3(20, 24, 0);
-        Debug.Log("Spawnando mini chefe em: " + posicao);
         GameObject miniChefe = Instantiate(prefabMiniChefe, posicao, Quaternion.identity);
-        Debug.Log("Mini chefe criado: " + miniChefe.name);
 
         EnemyAI ai = miniChefe.GetComponent<EnemyAI>();
         if (ai != null)
             ai.player = GameObject.FindWithTag("Player").transform;
-        else
-            Debug.LogError("EnemyAI nao encontrado no mini chefe!");
+
+        Debug.Log("Mini chefe spawnado!");
     }
 }
