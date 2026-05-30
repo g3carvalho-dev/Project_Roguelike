@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 278459818570980999}
   m_Layer: 0
   m_Name: MiniChefe
-  m_TagString: Untagged
+  m_TagString: Inimigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -191,3 +191,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxima: 150
   vidaAtual: 0
+  isMiniChefe: 1

@@ -4,6 +4,7 @@ public class EnemyStats : MonoBehaviour
 {
     public float vidaMaxima = 50f;
     public float vidaAtual;
+    public bool isMiniChefe = false;
 
     void Start()
     {
@@ -23,9 +24,17 @@ public class EnemyStats : MonoBehaviour
     {
         Debug.Log(gameObject.name + " morreu!");
 
-        InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
-        if (spawner != null)
-            spawner.InimigoDerrotado();
+        if (!isMiniChefe)
+        {
+            InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
+            if (spawner != null)
+                spawner.InimigoDerrotado();
+        }
+        else
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.MiniChefeDerrotado();
+        }
 
         Destroy(gameObject);
     }

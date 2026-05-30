@@ -38,11 +38,15 @@ public class PlayerStats : MonoBehaviour
         if (tentativasAtuais <= 0)
         {
             Debug.Log("Game Over!");
+            // tela de game over depois
         }
         else
         {
             coracoesAtuais = coracoesMaximos;
-            Debug.Log("Voltando ao checkpoint com corações cheios!");
+            Debug.Log("Voltando ao checkpoint!");
+            GameManager.Instance.VoltarParaCheckpoint();
         }
     }
+
+    
 }
