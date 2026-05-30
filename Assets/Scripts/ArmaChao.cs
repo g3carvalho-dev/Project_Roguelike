@@ -11,13 +11,13 @@ public class ArmaChao : MonoBehaviour
     public GameObject prefabArmaChao;
 
     private bool playerPerto = false;
-    private PlayerAttack playerAtack;
+    private PlayerAttack playerAttack;
 
     void Update()
     {
         if (this == null || gameObject == null) return;
         if (playerPerto && Input.GetKeyDown(KeyCode.C))
-            Equipar();
+            TentarColetar();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -25,7 +25,7 @@ public class ArmaChao : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerPerto = true;
-            playerAtack = other.GetComponent<PlayerAttack>();
+            playerAttack = other.GetComponent<PlayerAttack>();
         }
     }
 
@@ -34,42 +34,31 @@ public class ArmaChao : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerPerto = false;
-            playerAtack = null;
+            playerAttack = null;
         }
     }
 
-    void Equipar()
+    void TentarColetar()
     {
-        if (playerAtack == null) return;
+        if (playerAttack == null) return;
 
-        if (playerAtack.armaAtual != null)
+        if (playerAttack.InventarioCheio())
         {
-            GameObject armaDropada = Instantiate(
-                prefabArmaChao,
-                transform.position + new Vector3(0.5f, 0, 0),
-                Quaternion.identity
-            );
-
-            ArmaChao armaChaoScript = armaDropada.GetComponent<ArmaChao>();
-            armaChaoScript.nomeArma = playerAtack.armaAtual.nome;
-            armaChaoScript.tipoArma = playerAtack.armaAtual.tipo;
-            armaChaoScript.dano = playerAtack.armaAtual.dano;
-            armaChaoScript.danoHeavy = playerAtack.armaAtual.danoHeavy;
-            armaChaoScript.intervaloAtaque = playerAtack.armaAtual.intervaloAtaque;
-            armaChaoScript.intervaloAtaqueHeavy = playerAtack.armaAtual.intervaloAtaqueHeavy;
-            armaChaoScript.prefabArmaChao = prefabArmaChao;
+            Debug.Log("Inventário cheio! Máximo de " + playerAttack.capacidadeMaxima + " armas.");
+            return;
         }
 
         Arma novaArma = new Arma();
-        novaArma.nome = nomeArma;
-        novaArma.tipo = tipoArma;
-        novaArma.dano = dano;
-        novaArma.danoHeavy = danoHeavy;
-        novaArma.intervaloAtaque = intervaloAtaque;
+        novaArma.nome              = nomeArma;
+        novaArma.tipo              = tipoArma;
+        novaArma.dano              = dano;
+        novaArma.danoHeavy         = danoHeavy;
+        novaArma.intervaloAtaque   = intervaloAtaque;
         novaArma.intervaloAtaqueHeavy = intervaloAtaqueHeavy;
+        novaArma.prefabArmaChao    = prefabArmaChao;
 
-        playerAtack.armaAtual = novaArma;
-        Debug.Log("Equipou: " + nomeArma);
-        Destroy(gameObject);
+        bool coletou = playerAttack.AdicionarArma(novaArma);
+        if (coletou)
+            Destroy(gameObject);
     }
 }
