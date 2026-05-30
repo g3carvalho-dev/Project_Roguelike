@@ -1,0 +1,34 @@
+using System.Diagnostics;
+using UnityEngine;
+
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
+public class LayerCollisionSetup : MonoBehaviour
+{
+    void Awake()
+    {
+
+        int player = LayerMask.NameToLayer("Player");
+        int room = LayerMask.NameToLayer("Room");
+        int corridor = LayerMask.NameToLayer("Corridor");
+        int enemy = LayerMask.NameToLayer("Enemy");
+
+
+        ConfigureCollision(player, room, false);
+        ConfigureCollision(player, corridor, false);
+        ConfigureCollision(player, enemy, false);
+
+        ConfigureCollision(enemy, room, true);
+        ConfigureCollision(enemy, corridor, false);
+        ConfigureCollision(enemy, player, false);
+    }
+
+    void ConfigureCollision(int layerA, int layerB, bool ignore)
+    {
+        Physics2D.IgnoreLayerCollision(layerA, layerB, ignore);
+    }
+
+    private string GetDebuggerDisplay()
+    {
+        return ToString();
+    }
+}
