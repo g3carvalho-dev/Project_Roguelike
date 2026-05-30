@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -11,18 +12,27 @@ public class MapGenerator : MonoBehaviour
     public Sprite spriteChao;
     public Sprite spriteParede;
 
-    [Header("Tamanho do Mapa")]
-    public int largura = 40;
-    public int altura = 40;
+    [Header("Tamanho da Sala")]
+    public int larguraSala = 20;
+    public int alturaSala = 20;
 
     private Tile tileChao;
     private Tile tileParede;
 
+    public static MapGenerator Instance;
+
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     void Start()
     {
         CriarTiles();
-        int[,] mapa = GerarMapa();
-        DesenharMapa(mapa);
+        GerarSala();
     }
 
     void CriarTiles()
@@ -36,31 +46,40 @@ public class MapGenerator : MonoBehaviour
         tileParede.color = new Color(0.3f, 0.3f, 0.3f);
     }
 
-    int[,] GerarMapa()
+    public void GerarSala()
     {
-        int[,] mapa = new int[altura, largura];
+        int[,] mapa = new int[alturaSala, larguraSala];
 
-        // tudo começa como parede
-        for (int y = 0; y < altura; y++)
-            for (int x = 0; x < largura; x++)
-                mapa[y, x] = 1;
-
-        // sala de repouso (onde o player começa)
-        for (int y = 2; y < 12; y++)
-            for (int x = 2; x < 22; x++)
+        
+        for (int y = 0; y < alturaSala; y++)
+            for (int x = 0; x < larguraSala; x++)
                 mapa[y, x] = 0;
 
-        // corredor conectando as salas
-        for (int y = 11; y < 15; y++)
-            for (int x = 10; x < 13; x++)
-                mapa[y, x] = 0;
+        
+        for (int x = 0; x < larguraSala; x++)
+        {
+            mapa[0, x] = 1;
+            mapa[alturaSala - 1, x] = 1;
+        }
+        for (int y = 0; y < alturaSala; y++)
+        {
+            mapa[y, 0] = 1;
+            mapa[y, larguraSala - 1] = 1;
+        }
 
-        // sala principal do jogo
-        for (int y = 14; y < 35; y++)
-            for (int x = 5; x < 35; x++)
-                mapa[y, x] = 0;
+        
+        int portaY = alturaSala / 2;
+        mapa[portaY, larguraSala - 1] = 0;
 
-        return mapa;
+        DesenharMapa(mapa);
+
+        
+        Porta porta = FindObjectOfType<Porta>();
+        if (porta != null)
+            porta.transform.position = new Vector3(larguraSala - 1, alturaSala / 2, 0);
+
+        DesenharMapa(mapa);
+        
     }
 
     void DesenharMapa(int[,] mapa)
@@ -68,12 +87,11 @@ public class MapGenerator : MonoBehaviour
         tilemapChao.ClearAllTiles();
         tilemapParedes.ClearAllTiles();
 
-        for (int y = 0; y < altura; y++)
+        for (int y = 0; y < alturaSala; y++)
         {
-            for (int x = 0; x < largura; x++)
+            for (int x = 0; x < larguraSala; x++)
             {
                 Vector3Int pos = new Vector3Int(x, y, 0);
-
                 if (mapa[y, x] == 1)
                     tilemapParedes.SetTile(pos, tileParede);
                 else

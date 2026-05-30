@@ -47,4 +47,6 @@ public class PlayerStats : MonoBehaviour
             GameManager.Instance.VoltarParaCheckpoint();
         }
     }
+
+    
 }

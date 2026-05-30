@@ -9,16 +9,22 @@ public class InimigosSpawner : MonoBehaviour
     public float areaSpawnY = 15f;
     public Vector2 centroSala;
 
-    private int inimigosMortos = 0;
+    public int inimigosMortos = 0;
     private int totalInimigos = 0;
     public bool salaLimpa = false;
 
     void Start()
     {
+        if (GameManager.Instance != null && GameManager.Instance.salaAtual == 1)
+        {
+            Debug.Log("Sala de repouso - sem inimigos!");
+            return;
+        }
+
         SpawnarInimigos();
     }
 
-    void SpawnarInimigos()
+    public void SpawnarInimigos()
     {
         totalInimigos = quantidadeInimigos;
 

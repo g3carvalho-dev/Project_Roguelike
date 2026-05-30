@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     {
         minichefeDerrotado = true;
         Debug.Log("Mini chefe derrotado! Proxima sala liberada.");
+
+        Porta porta = FindObjectOfType<Porta>();
+        if (porta != null)
+            porta.Desbloquear();
+
         VerificarCheckpoint();
     }
 
@@ -86,7 +91,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Vector3 posicao = new Vector3(20, 24, 0);
+        Vector3 posicao = new Vector3(15, 15, 0);
         GameObject miniChefe = Instantiate(prefabMiniChefe, posicao, Quaternion.identity);
 
         EnemyAI ai = miniChefe.GetComponent<EnemyAI>();
@@ -95,4 +100,37 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Mini chefe spawnado!");
     }
+    public void AvancarParaProximaSala()
+    {
+        salaAtual++;
+        salaLimpa = false;
+        minichefeDerrotado = false;
+        Debug.Log("Entrando na sala " + salaAtual);
+
+        
+        MapGenerator.Instance.GerarSala();
+
+        
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+            player.transform.position = new Vector3(2, 10, 0);
+
+        
+        Porta porta = FindObjectOfType<Porta>();
+        if (porta != null)
+            porta.Resetar();
+
+        
+        InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
+        if (spawner != null)
+        {
+            spawner.salaLimpa = false;
+            spawner.inimigosMortos = 0;
+            spawner.centroSala = new Vector2(15, 15);
+            spawner.areaSpawnX = 10;
+            spawner.areaSpawnY = 10;
+            spawner.SpawnarInimigos();
+        }
+    }
+
 }

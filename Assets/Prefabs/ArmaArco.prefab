@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nomeArma: Espada
-  tipoArma: 0
+  tipoArma: 1
   dano: 25
   danoHeavy: 30
   intervaloAtaque: 0.5
