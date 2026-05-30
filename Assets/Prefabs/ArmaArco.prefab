@@ -136,5 +136,7 @@ MonoBehaviour:
   nomeArma: Espada
   tipoArma: 0
   dano: 25
+  danoHeavy: 30
   intervaloAtaque: 0.5
+  intervaloAtaqueHeavy: 1.5
   prefabArmaChao: {fileID: 7658052778165953172}
