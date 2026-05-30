@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &140469163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140469164}
+  m_Layer: 0
+  m_Name: ArmaAtual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140469164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140469163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 918275241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &190700986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130,6 +161,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4781677070277077155, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+    - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -487,6 +534,22 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4339843440311815483, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+    - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
@@ -539,6 +602,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8835384950145450123, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
+      propertyPath: nomeArma
+      value: Arco
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835384950145450123, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
       propertyPath: tipoArma
       value: 1
       objectReference: {fileID: 0}
@@ -559,6 +626,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 6419661573565978844, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+    - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -711,7 +794,8 @@ Transform:
   m_LocalPosition: {x: 5, y: 5, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 140469164}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &918275242
@@ -811,14 +895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3fc36e792db0a4aac4ba7bdde3200e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armaAtual:
-    nome: Espada
-    tipo: 0
-    dano: 25
-    danoHeavy: 0
-    intervaloAtaque: 0.5
-    intervaloAtaqueHeavy: 0
-    prefabProjetil: {fileID: 0}
+  inventario: []
+  indiceAtual: 0
+  capacidadeMaxima: 4
   prefabProjetil: {fileID: 8739395613347183823, guid: b059236849c51dc448194b6a806014e6, type: 3}
 --- !u!114 &918275246
 MonoBehaviour:
@@ -1273,6 +1352,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8632984255864445469, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+    - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
       propertyPath: m_SortingOrder
       value: 2

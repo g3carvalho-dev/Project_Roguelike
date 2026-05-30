@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum TipoArma { Melee, Ranged }
 
@@ -12,22 +13,39 @@ public class Arma
     public float intervaloAtaque;
     public float intervaloAtaqueHeavy;
     public GameObject prefabProjetil;
+    public GameObject prefabArmaChao; // referência para dropar depois (opcional)
 }
 
 public class PlayerAttack : MonoBehaviour
 {
-    public Arma armaAtual;
+    [Header("Inventário")]
+    public List<Arma> inventario = new List<Arma>();
+    public int indiceAtual = 0;
+    public int capacidadeMaxima = 4;
+
+    // Propriedade para manter compatibilidade com ArmaChao
+    public Arma armaAtual
+    {
+        get => inventario.Count > 0 ? inventario[indiceAtual] : null;
+        set
+        {
+            // Mantido para compatibilidade, mas use AdicionarArma()
+            if (value != null) AdicionarArma(value);
+        }
+    }
+
     public GameObject prefabProjetil;
+
     private float timerLight;
     private float timerHeavy;
 
-    void Start()
-    {
-        armaAtual = null;
-    }
+    // Evento chamado sempre que o inventário muda (para a UI escutar)
+    public System.Action onInventarioAtualizado;
 
     void Update()
     {
+        LidarComScroll();
+
         if (armaAtual == null) return;
 
         timerLight -= Time.deltaTime;
@@ -46,6 +64,58 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    void LidarComScroll()
+    {
+        if (inventario.Count <= 1) return;
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scroll > 0f)
+            MudarArma(-1); // scroll pra cima = anterior
+        else if (scroll < 0f)
+            MudarArma(1);  // scroll pra baixo = próxima
+
+        // Teclas numéricas 1-4 para acesso direto
+        for (int i = 0; i < Mathf.Min(inventario.Count, 4); i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                SelecionarArma(i);
+        }
+    }
+
+    void MudarArma(int direcao)
+    {
+        indiceAtual = (indiceAtual + direcao + inventario.Count) % inventario.Count;
+        onInventarioAtualizado?.Invoke();
+        Debug.Log($"Arma selecionada: {armaAtual.nome} [{indiceAtual + 1}/{inventario.Count}]");
+    }
+
+    public void SelecionarArma(int indice)
+    {
+        if (indice < 0 || indice >= inventario.Count) return;
+        indiceAtual = indice;
+        onInventarioAtualizado?.Invoke();
+    }
+
+    public bool AdicionarArma(Arma novaArma)
+    {
+        if (inventario.Count >= capacidadeMaxima)
+        {
+            Debug.Log("Inventário cheio!");
+            return false;
+        }
+
+        inventario.Add(novaArma);
+        indiceAtual = inventario.Count - 1; // seleciona a recém coletada
+        onInventarioAtualizado?.Invoke();
+        Debug.Log($"Coletou: {novaArma.nome} [{inventario.Count}/{capacidadeMaxima}]");
+        return true;
+    }
+
+    public bool InventarioCheio() => inventario.Count >= capacidadeMaxima;
+
+    // ── Ataque ──────────────────────────────────────────────────────────────
+
     void Atacar(bool pesado)
     {
         Vector3 mouseMundo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -53,8 +123,8 @@ public class PlayerAttack : MonoBehaviour
         Vector2 direcao = (mouseMundo - transform.position).normalized;
 
         float danoAtual = pesado ? armaAtual.danoHeavy : armaAtual.dano;
-        float alcance = pesado ? 1.8f : 1.2f;
-        float area = pesado ? 1.5f : 1f;
+        float alcance   = pesado ? 1.8f : 1.2f;
+        float area      = pesado ? 1.5f : 1f;
 
         if (armaAtual.tipo == TipoArma.Ranged)
             AtaqueRanged(direcao);
@@ -64,11 +134,7 @@ public class PlayerAttack : MonoBehaviour
 
     void AtaqueRanged(Vector2 direcao)
     {
-        GameObject projetil = Instantiate(
-            prefabProjetil,
-            transform.position,
-            Quaternion.identity
-        );
+        GameObject projetil = Instantiate(prefabProjetil, transform.position, Quaternion.identity);
         projetil.GetComponent<Projetil>().Iniciar(direcao);
     }
 
@@ -90,10 +156,9 @@ public class PlayerAttack : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        if (Camera.main == null) return;
         Gizmos.color = Color.red;
-        Vector3 mouseMundo = Camera.main != null
-            ? Camera.main.ScreenToWorldPoint(Input.mousePosition)
-            : transform.position + Vector3.right;
+        Vector3 mouseMundo = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseMundo.z = 0;
         Vector2 direcao = (mouseMundo - transform.position).normalized;
         Gizmos.DrawWireSphere(transform.position + (Vector3)(direcao * 0.8f), 0.5f);
