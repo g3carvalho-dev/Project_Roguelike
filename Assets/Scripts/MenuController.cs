@@ -6,6 +6,7 @@ public class MenuController : MonoBehaviour
     public GameObject painelMenu;
     public GameObject painelOpcoes;
     public GameObject painelJogar;
+    public GameObject painelSair;
 
     void Start()
     {
@@ -16,13 +17,14 @@ public class MenuController : MonoBehaviour
 
     public void BotaoJogar()
     {
-        Debug.Log("Botao Jogar clicado!");
+        Debug.Log("Acessando painel de saves");
         painelMenu.SetActive(false);
         painelJogar.SetActive(true);
     }
 
     public void BotaoOpcoes()
     {
+        Debug.Log("Acessando menu de opções");
         painelMenu.SetActive(false);
         painelOpcoes.SetActive(true);
     }
@@ -36,7 +38,22 @@ public class MenuController : MonoBehaviour
 
     public void BotaoSair()
     {
+        Debug.Log("Acessando modal de confirmação de saída");
+        painelMenu.SetActive(false);
+        painelSair.SetActive(true);
+    }
+
+    public void BotaoConfirmarSaida()
+    {
+        Debug.Log("Saindo do jogo");
         Application.Quit();
+    }
+
+    public void BotaoCancelarSaida()
+    {
+        Debug.Log("Cancelando saída do jogo");
+        painelSair.SetActive(false);
+        painelMenu.SetActive(true);
     }
 
     public void IniciarJogo(int slot)
