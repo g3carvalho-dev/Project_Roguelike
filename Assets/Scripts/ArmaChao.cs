@@ -9,9 +9,14 @@ public class ArmaChao : MonoBehaviour
     public float intervaloAtaque = 0.5f;
     public float intervaloAtaqueHeavy = 1f;
     public GameObject prefabArmaChao;
-
     private bool playerPerto = false;
     private PlayerAttack playerAtack;
+
+    void Start()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.salaAtual > 1)
+            Destroy(gameObject);
+    }
 
     void Update()
     {
@@ -49,7 +54,6 @@ public class ArmaChao : MonoBehaviour
                 transform.position + new Vector3(0.5f, 0, 0),
                 Quaternion.identity
             );
-
             ArmaChao armaChaoScript = armaDropada.GetComponent<ArmaChao>();
             armaChaoScript.nomeArma = playerAtack.armaAtual.nome;
             armaChaoScript.tipoArma = playerAtack.armaAtual.tipo;
