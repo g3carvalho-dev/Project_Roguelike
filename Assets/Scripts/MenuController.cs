@@ -1,46 +1,79 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class MenuController : MonoBehaviour
 {
-    public GameObject painelMenu;
-    public GameObject painelOpcoes;
-    public GameObject painelJogar;
-    public GameObject painelSair;
+    [Header("Painéis do Menu Manager")]
+    [SerializeField] private GameObject painelMenu;
+    [SerializeField] private GameObject painelOpcoes;
+    [SerializeField] private GameObject painelJogar;
+    [SerializeField] private GameObject painelSair;
+
+    // Pilha para manter histório de painéis acessados
+    private Stack<GameObject> historicoPaineis = new Stack<GameObject>();
+    private GameObject currentPanel;
 
     void Start()
     {
         painelMenu.SetActive(true);
-        painelOpcoes.SetActive(false);
-        painelJogar.SetActive(false);
+        if (painelOpcoes != null) painelOpcoes.SetActive(false);
+        if (painelJogar != null) painelJogar.SetActive(false);
+        if (painelSair != null) painelSair.SetActive(false);
+
+        currentPanel = painelMenu;
     }
 
     public void BotaoJogar()
     {
         Debug.Log("Acessando painel de saves");
-        painelMenu.SetActive(false);
-        painelJogar.SetActive(true);
+        NavegarPara(painelJogar);
     }
 
     public void BotaoOpcoes()
     {
         Debug.Log("Acessando menu de opções");
-        painelMenu.SetActive(false);
-        painelOpcoes.SetActive(true);
-    }
-
-    public void BotaoVoltar()
-    {
-        painelMenu.SetActive(true);
-        painelOpcoes.SetActive(false);
-        painelJogar.SetActive(false);
+        NavegarPara(painelOpcoes);
     }
 
     public void BotaoSair()
     {
         Debug.Log("Acessando modal de confirmação de saída");
-        painelMenu.SetActive(false);
-        painelSair.SetActive(true);
+        NavegarPara(painelSair);
+    }
+
+    public void IniciarJogo(int slot)
+    {
+        PlayerPrefs.SetInt("SlotAtual", slot);
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    private void NavegarPara(GameObject proximoPainel)
+    {
+        if (proximoPainel == null) return;
+
+        if (currentPanel != null)
+        {
+            historicoPaineis.Push(currentPanel); // Guarda o painel atual no histórico
+            currentPanel.SetActive(false);       // Desativa o painel atual
+        }
+
+        currentPanel = proximoPainel;
+        currentPanel.SetActive(true);            // Ativa o novo painel
+    }
+
+    public void BotaoVoltar()
+    {
+        if (historicoPaineis.Count > 0)
+        {
+            if (currentPanel != null)
+            {
+                currentPanel.SetActive(false);   
+            }
+
+            currentPanel = historicoPaineis.Pop();
+            currentPanel.SetActive(true);          
+        }
     }
 
     public void BotaoConfirmarSaida()
@@ -49,16 +82,4 @@ public class MenuController : MonoBehaviour
         Application.Quit();
     }
 
-    public void BotaoCancelarSaida()
-    {
-        Debug.Log("Cancelando saída do jogo");
-        painelSair.SetActive(false);
-        painelMenu.SetActive(true);
-    }
-
-    public void IniciarJogo(int slot)
-    {
-        PlayerPrefs.SetInt("SlotAtual", slot);
-        SceneManager.LoadScene("SampleScene");
-    }
 }
