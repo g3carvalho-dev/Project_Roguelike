@@ -26,12 +26,12 @@ public class PlayerDash : MonoBehaviour
         if (dashando)
         {
             timerDash -= Time.deltaTime;
-            rb.velocity = direcaoDash * velocidadeDash;
+            rb.linearVelocity = direcaoDash * velocidadeDash;
 
             if (timerDash <= 0)
             {
                 dashando = false;
-                rb.velocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
 
                 PlayerStats stats = GetComponent<PlayerStats>();
                 if (stats != null)

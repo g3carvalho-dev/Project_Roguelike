@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour
         if (distancia < distanciaDeteccao)
         {
             Vector2 direcao = (player.position - transform.position).normalized;
-            rb.velocity = direcao * velocidade;
+            rb.linearVelocity = direcao * velocidade;
 
             if (distancia < 0.6f && timerDano <= 0)
             {
@@ -41,7 +41,7 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
         }
     }
 }
