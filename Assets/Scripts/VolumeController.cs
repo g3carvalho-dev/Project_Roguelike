@@ -68,4 +68,20 @@ public class VolumeController : MonoBehaviour
         PlayerPrefs.SetFloat(nomeParametro, valorSlider);
         PlayerPrefs.Save();
     }
+
+    public void AumentarVolume(Slider sliderAlvo)
+    {
+        if (sliderAlvo != null && sliderAlvo.value < sliderAlvo.maxValue)
+        {
+            sliderAlvo.value += 1; // Aumenta 1 "gomo"
+        }
+    }
+
+    public void DiminuirVolume(Slider sliderAlvo)
+    {
+        if (sliderAlvo != null && sliderAlvo.value > sliderAlvo.minValue)
+        {
+            sliderAlvo.value -= 1; // Diminui 1 "gomo"
+        }
+    }
 }
