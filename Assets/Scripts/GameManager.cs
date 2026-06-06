@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
 
     void VerificarCheckpoint()
     {
+        AvancarSala(); // incrementa primeiro
+
         if (salaAtual % 3 == 0)
         {
             checkpointSala = salaAtual;
@@ -52,12 +54,16 @@ public class GameManager : MonoBehaviour
             Debug.Log("Checkpoint salvo na sala " + checkpointSala + "!");
 
             if (salaAtual != 9)
+            {
                 Debug.Log("Loja disponivel antes do chefe!");
+                if (LojaManager.Instance != null)
+                    LojaManager.Instance.AbrirLoja();
+                else
+                    Debug.LogError("LojaManager.Instance esta nulo!");
+            }
             else
                 Debug.Log("Chefe final!");
         }
-
-        AvancarSala();
     }
 
     void AvancarSala()
@@ -110,6 +116,10 @@ public class GameManager : MonoBehaviour
         
         MapGenerator.Instance.GerarSala();
 
+       
+        GameObject salaRepouso = GameObject.Find("SalaRepouso");
+        if (salaRepouso != null)
+            salaRepouso.SetActive(false);
         
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
