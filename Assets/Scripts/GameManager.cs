@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+ 
     [Header("Progressao")]
     public int salaAtual = 1;
     public int totalSalas = 9;
@@ -15,7 +15,11 @@ public class GameManager : MonoBehaviour
     public bool minichefeDerrotado = false;
 
     public GameObject prefabMiniChefe;
-
+ 
+    [Header("Moedas")]
+    public int moedas = 0;
+    public System.Action onMoedasAtualizadas; // HUD escuta isso
+ 
     void Awake()
     {
         if (Instance == null)
@@ -23,14 +27,21 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
+ 
+    public void AdicionarMoeda(int quantidade = 1)
+    {
+        moedas += quantidade;
+        Debug.Log("[Moedas] Total: " + moedas);
+        onMoedasAtualizadas?.Invoke();
+    }
+ 
     public void SalaLimpa()
     {
         salaLimpa = true;
         Debug.Log("Sala " + salaAtual + " limpa! Spawnando mini chefe...");
         SpawnarMiniChefe();
     }
-
+ 
     public void MiniChefeDerrotado()
     {
         minichefeDerrotado = true;
@@ -42,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         VerificarCheckpoint();
     }
-
+ 
     void VerificarCheckpoint()
     {
         AvancarSala(); // incrementa primeiro
@@ -52,7 +63,7 @@ public class GameManager : MonoBehaviour
             checkpointSala = salaAtual;
             PlayerPrefs.SetInt("Checkpoint", checkpointSala);
             Debug.Log("Checkpoint salvo na sala " + checkpointSala + "!");
-
+ 
             if (salaAtual != 9)
             {
                 Debug.Log("Loja disponivel antes do chefe!");
@@ -64,8 +75,10 @@ public class GameManager : MonoBehaviour
             else
                 Debug.Log("Chefe final!");
         }
+ 
+        AvancarSala();
     }
-
+ 
     void AvancarSala()
     {
         if (salaAtual >= totalSalas)
@@ -73,7 +86,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Vitoria!");
             return;
         }
-
+ 
         salaAtual++;
         salaLimpa = false;
         minichefeDerrotado = false;
