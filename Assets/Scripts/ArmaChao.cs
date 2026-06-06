@@ -10,7 +10,7 @@ public class ArmaChao : MonoBehaviour
     public float intervaloAtaqueHeavy = 1f;
     public GameObject prefabArmaChao;
     private bool playerPerto = false;
-    private PlayerAttack playerAtack;
+    private PlayerAttack playerAttack;
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class ArmaChao : MonoBehaviour
     {
         if (this == null || gameObject == null) return;
         if (playerPerto && Input.GetKeyDown(KeyCode.C))
-            Equipar();
+            TentarColetar();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -30,7 +30,7 @@ public class ArmaChao : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerPerto = true;
-            playerAtack = other.GetComponent<PlayerAttack>();
+            playerAttack = other.GetComponent<PlayerAttack>();
         }
     }
 
@@ -39,14 +39,18 @@ public class ArmaChao : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerPerto = false;
-            playerAtack = null;
+            playerAttack = null;
         }
     }
 
-    void Equipar()
+    void TentarColetar()
     {
-        if (playerAtack == null) return;
+        if (playerAttack == null) return;
 
+        if (playerAttack.InventarioCheio())
+        {
+            Debug.Log("Inventário cheio! Máximo de " + playerAttack.capacidadeMaxima + " armas.");
+            return;
         if (playerAtack.armaAtual != null)
         {
             GameObject armaDropada = Instantiate(
@@ -65,15 +69,16 @@ public class ArmaChao : MonoBehaviour
         }
 
         Arma novaArma = new Arma();
-        novaArma.nome = nomeArma;
-        novaArma.tipo = tipoArma;
-        novaArma.dano = dano;
-        novaArma.danoHeavy = danoHeavy;
-        novaArma.intervaloAtaque = intervaloAtaque;
+        novaArma.nome              = nomeArma;
+        novaArma.tipo              = tipoArma;
+        novaArma.dano              = dano;
+        novaArma.danoHeavy         = danoHeavy;
+        novaArma.intervaloAtaque   = intervaloAtaque;
         novaArma.intervaloAtaqueHeavy = intervaloAtaqueHeavy;
+        novaArma.prefabArmaChao    = prefabArmaChao;
 
-        playerAtack.armaAtual = novaArma;
-        Debug.Log("Equipou: " + nomeArma);
-        Destroy(gameObject);
+        bool coletou = playerAttack.AdicionarArma(novaArma);
+        if (coletou)
+            Destroy(gameObject);
     }
 }
