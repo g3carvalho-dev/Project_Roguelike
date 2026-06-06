@@ -4,6 +4,7 @@ public class EnemyStats : MonoBehaviour
 {
     public float vidaMaxima = 50f;
     public float vidaAtual;
+    public bool isMiniChefe = false;
  
     [Header("Drop de Moedas")]
     public GameObject prefabMoeda;      // arraste o prefab da moeda aqui
@@ -30,10 +31,18 @@ public class EnemyStats : MonoBehaviour
  
         DropMoedas();
  
-        InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
-        if (spawner != null)
-            spawner.InimigoDerrotado();
- 
+        if (!isMiniChefe)
+        {
+            InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
+            if (spawner != null)
+                spawner.InimigoDerrotado();
+         }
+        else
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.MiniChefeDerrotado();
+        }
+
         Destroy(gameObject);
     }
  

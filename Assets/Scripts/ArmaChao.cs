@@ -15,6 +15,7 @@ public class ArmaChao : MonoBehaviour
 
     void Update()
     {
+        if (this == null || gameObject == null) return;
         if (playerPerto && Input.GetKeyDown(KeyCode.C))
             TentarColetar();
     }
