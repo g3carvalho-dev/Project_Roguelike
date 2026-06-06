@@ -31,9 +31,9 @@ namespace OccaSoftware.Crosshairs.Editor
 
         void OnGUI()
         {
-            SetupHeaderStyle(startMenu);
-            SetupButtonStyle(startMenu);
-            SetupContentSectionStyle(startMenu);
+            SetupHeaderStyle(this);
+            SetupButtonStyle(this);
+            SetupContentSectionStyle(this);
 
             DrawHeader();
             DrawReviewRequest();
