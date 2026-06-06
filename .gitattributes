@@ -1,0 +1,15 @@
+# Versao do Unity sempre a sua (Unity 6)
+ProjectSettings/ProjectVersion.txt merge=ours
+
+# ProjectSettings como um todo: nos sempre vencemos
+/ProjectSettings/ merge=ours
+
+# manifest.json: tentar unir
+/Packages/manifest.json merge=union
+
+# Cenas e prefabs: merge inteligente (requer UnityYAMLMerge configurado)
+*.unity merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+
+# packages-lock.json e gerados
+/Packages/packages-lock.json linguist-generated
