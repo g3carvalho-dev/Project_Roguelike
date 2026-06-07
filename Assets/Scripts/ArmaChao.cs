@@ -9,6 +9,7 @@ public class ArmaChao : MonoBehaviour
     public float intervaloAtaque = 0.5f;
     public float intervaloAtaqueHeavy = 1f;
     public GameObject prefabArmaChao;
+
     private bool playerPerto = false;
     private PlayerAttack playerAttack;
 
@@ -49,33 +50,18 @@ public class ArmaChao : MonoBehaviour
 
         if (playerAttack.InventarioCheio())
         {
-            Debug.Log("Inventário cheio! Máximo de " + playerAttack.capacidadeMaxima + " armas.");
+            Debug.Log("Inventario cheio! Maximo de " + playerAttack.capacidadeMaxima + " armas.");
             return;
-        if (playerAtack.armaAtual != null)
-        {
-            GameObject armaDropada = Instantiate(
-                prefabArmaChao,
-                transform.position + new Vector3(0.5f, 0, 0),
-                Quaternion.identity
-            );
-            ArmaChao armaChaoScript = armaDropada.GetComponent<ArmaChao>();
-            armaChaoScript.nomeArma = playerAtack.armaAtual.nome;
-            armaChaoScript.tipoArma = playerAtack.armaAtual.tipo;
-            armaChaoScript.dano = playerAtack.armaAtual.dano;
-            armaChaoScript.danoHeavy = playerAtack.armaAtual.danoHeavy;
-            armaChaoScript.intervaloAtaque = playerAtack.armaAtual.intervaloAtaque;
-            armaChaoScript.intervaloAtaqueHeavy = playerAtack.armaAtual.intervaloAtaqueHeavy;
-            armaChaoScript.prefabArmaChao = prefabArmaChao;
         }
 
         Arma novaArma = new Arma();
-        novaArma.nome              = nomeArma;
-        novaArma.tipo              = tipoArma;
-        novaArma.dano              = dano;
-        novaArma.danoHeavy         = danoHeavy;
-        novaArma.intervaloAtaque   = intervaloAtaque;
+        novaArma.nome = nomeArma;
+        novaArma.tipo = tipoArma;
+        novaArma.dano = dano;
+        novaArma.danoHeavy = danoHeavy;
+        novaArma.intervaloAtaque = intervaloAtaque;
         novaArma.intervaloAtaqueHeavy = intervaloAtaqueHeavy;
-        novaArma.prefabArmaChao    = prefabArmaChao;
+        novaArma.prefabArmaChao = prefabArmaChao;
 
         bool coletou = playerAttack.AdicionarArma(novaArma);
         if (coletou)
