@@ -18,19 +18,35 @@ public class HUDController : MonoBehaviour
     public Color corSlotAtivo   = new Color(1f, 0.85f, 0.2f);
     public Color corSlotInativo = new Color(0.4f, 0.4f, 0.4f);
 
-    void Start()
+    void Awake()
     {
         if (playerAttack == null)
             playerAttack = FindObjectOfType<PlayerAttack>();
+    }
 
+    void Start()
+    {
         if (playerAttack != null)
             playerAttack.onInventarioAtualizado += AtualizarSlots;
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.onMoedasAtualizadas += AtualizarMoedas;
-
         AtualizarSlots();
         AtualizarMoedas();
+    }
+
+    // Usa Update para garantir que pega o GameManager mesmo se ele inicializar depois
+    private bool inscrito = false;
+    void Update()
+    {
+        if (!inscrito && GameManager.Instance != null)
+        {
+            GameManager.Instance.onMoedasAtualizadas += AtualizarMoedas;
+            inscrito = true;
+            AtualizarMoedas();
+        }
+
+        if (playerStats == null) return;
+        textoCoracoes.text   = "Coracoes: "  + playerStats.coracoesAtuais + "/" + playerStats.coracoesMaximos;
+        textoTentativas.text = "Tentativas: " + playerStats.tentativasAtuais;
     }
 
     void OnDestroy()
@@ -42,16 +58,9 @@ public class HUDController : MonoBehaviour
             GameManager.Instance.onMoedasAtualizadas -= AtualizarMoedas;
     }
 
-    void Update()
-    {
-        if (playerStats == null) return;
-        textoCoracoes.text   = "Coracoes: "  + playerStats.coracoesAtuais + "/" + playerStats.coracoesMaximos;
-        textoTentativas.text = "Tentativas: " + playerStats.tentativasAtuais;
-    }
-
     void AtualizarMoedas()
     {
-        if (textoMoedas == null) return;
+        if (textoMoedas == null || GameManager.Instance == null) return;
         textoMoedas.text = "Moedas: " + GameManager.Instance.moedas;
     }
 

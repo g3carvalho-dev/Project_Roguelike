@@ -13,7 +13,7 @@ public class Arma
     public float intervaloAtaque;
     public float intervaloAtaqueHeavy;
     public GameObject prefabProjetil;
-    public GameObject prefabArmaChao; // referência para dropar depois (opcional)
+    public GameObject prefabArmaChao;
 }
 
 public class PlayerAttack : MonoBehaviour
@@ -21,35 +21,27 @@ public class PlayerAttack : MonoBehaviour
     [Header("Inventário")]
     public List<Arma> inventario = new List<Arma>();
     public int indiceAtual = 0;
-    public int capacidadeMaxima = 4;
+    public int capacidadeMaxima = 2;
 
-    // Propriedade para manter compatibilidade com ArmaChao
-    public Arma armaAtual
-    {
-        get => inventario.Count > 0 ? inventario[indiceAtual] : null;
-        set
-        {
-            // Mantido para compatibilidade, mas use AdicionarArma()
-            if (value != null) AdicionarArma(value);
-        }
-    }
+    public Arma armaAtual => inventario.Count > 0 ? inventario[indiceAtual] : null;
 
     public GameObject prefabProjetil;
 
     private float timerLight;
     private float timerHeavy;
+    private float scrollCooldown = 0f; // evita troca múltipla por scroll
 
-    // Evento chamado sempre que o inventário muda (para a UI escutar)
     public System.Action onInventarioAtualizado;
 
     void Update()
     {
-        LidarComScroll();
+        LidarComTroca();
 
         if (armaAtual == null) return;
 
         timerLight -= Time.deltaTime;
         timerHeavy -= Time.deltaTime;
+        scrollCooldown -= Time.deltaTime;
 
         if (Input.GetMouseButton(0) && timerLight <= 0)
         {
@@ -64,57 +56,82 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    void LidarComScroll()
+    void LidarComTroca()
     {
         if (inventario.Count <= 1) return;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        if (scroll > 0f)
-            MudarArma(-1); // scroll pra cima = anterior
-        else if (scroll < 0f)
-            MudarArma(1);  // scroll pra baixo = próxima
-
-        // Teclas numéricas 1-4 para acesso direto
-        for (int i = 0; i < Mathf.Min(inventario.Count, 4); i++)
+        // Scroll com cooldown para evitar troca múltipla
+        if (scrollCooldown <= 0f)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                SelecionarArma(i);
+            if (scroll > 0.05f)
+            {
+                Alternar();
+                scrollCooldown = 0.2f;
+            }
+            else if (scroll < -0.05f)
+            {
+                Alternar();
+                scrollCooldown = 0.2f;
+            }
         }
+
+        // Tecla Q alterna
+        if (Input.GetKeyDown(KeyCode.Q))
+            Alternar();
+
+        // Teclas 1 e 2 direto
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SelecionarArma(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SelecionarArma(1);
     }
 
-    void MudarArma(int direcao)
+    void Alternar()
     {
-        indiceAtual = (indiceAtual + direcao + inventario.Count) % inventario.Count;
-        onInventarioAtualizado?.Invoke();
-        Debug.Log($"Arma selecionada: {armaAtual.nome} [{indiceAtual + 1}/{inventario.Count}]");
+        int proximo = (indiceAtual + 1) % inventario.Count;
+        SelecionarArma(proximo);
     }
 
     public void SelecionarArma(int indice)
     {
         if (indice < 0 || indice >= inventario.Count) return;
+        if (indice == indiceAtual) return;
+
         indiceAtual = indice;
         onInventarioAtualizado?.Invoke();
+
+        Debug.Log($"[ARMA] Slot {indice + 1} → {armaAtual.nome}");
     }
 
     public bool AdicionarArma(Arma novaArma)
     {
         if (inventario.Count >= capacidadeMaxima)
         {
-            Debug.Log("Inventário cheio!");
+            Debug.Log($"[ARMA] Inventário cheio!");
             return false;
         }
 
         inventario.Add(novaArma);
-        indiceAtual = inventario.Count - 1; // seleciona a recém coletada
+        indiceAtual = inventario.Count - 1;
         onInventarioAtualizado?.Invoke();
-        Debug.Log($"Coletou: {novaArma.nome} [{inventario.Count}/{capacidadeMaxima}]");
+
+        Debug.Log($"[ARMA] Coletou: {novaArma.nome} → Slot {indiceAtual + 1}/{capacidadeMaxima}");
         return true;
     }
 
-    public bool InventarioCheio() => inventario.Count >= capacidadeMaxima;
+    public void RemoverArmaAtiva()
+    {
+        if (inventario.Count == 0) return;
 
-    // ── Ataque ──────────────────────────────────────────────────────────────
+        string nomeRemovida = armaAtual.nome;
+        inventario.RemoveAt(indiceAtual);
+        indiceAtual = Mathf.Clamp(indiceAtual, 0, Mathf.Max(0, inventario.Count - 1));
+        onInventarioAtualizado?.Invoke();
+
+        Debug.Log($"[ARMA] Removeu: {nomeRemovida}");
+    }
+
+    public bool InventarioCheio() => inventario.Count >= capacidadeMaxima;
 
     void Atacar(bool pesado)
     {
