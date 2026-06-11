@@ -23,7 +23,6 @@ public class LojaManager : MonoBehaviour
         itensAtuais.Clear();
         List<ItemLoja> disponiveis = new List<ItemLoja>(todosItens);
 
-        // seleciona 4 itens aleatorios nao repetidos
         for (int i = 0; i < 4 && disponiveis.Count > 0; i++)
         {
             int index = Random.Range(0, disponiveis.Count);
@@ -32,8 +31,10 @@ public class LojaManager : MonoBehaviour
         }
 
         Debug.Log("Loja aberta com " + itensAtuais.Count + " itens!");
-        foreach (ItemLoja item in itensAtuais)
-            Debug.Log("- " + item.nome + " | Preco: " + item.preco + " | Bonus: " + item.tipoBonus);
+
+        LojaUI lojaUI = FindObjectOfType<LojaUI>();
+        if (lojaUI != null)
+            lojaUI.AbrirLoja(itensAtuais);
     }
 
     public void ComprarItem(int index)
