@@ -17,7 +17,18 @@ public class Projetil : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Parede") || other.CompareTag("Inimigo"))
+        if (other.CompareTag("Parede"))
+        {
             Destroy(gameObject);
+            return;
+        }
+
+        if (other.CompareTag("Inimigo"))
+        {
+            EnemyStats stats = other.GetComponent<EnemyStats>();
+            if (stats != null)
+                stats.ReceberDano(10f);
+            Destroy(gameObject);
+        }
     }
 }

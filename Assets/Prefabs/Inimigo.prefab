@@ -175,6 +175,8 @@ MonoBehaviour:
   player: {fileID: 0}
   velocidade: 2
   distanciaDeteccao: 8
+  danoContato: 10
+  intervaloDano: 1
 --- !u!114 &-5270131869135509625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,3 +191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vidaMaxima: 50
   vidaAtual: 0
+  prefabMoeda: {fileID: 8319116454087566128, guid: 30a4e2a08c2c7234fb1d89ac1bad7f0d, type: 3}
+  moedasMin: 1
+  moedasMax: 3
