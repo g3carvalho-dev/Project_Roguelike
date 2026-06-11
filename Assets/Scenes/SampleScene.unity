@@ -295,6 +295,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &417316046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 417316047}
+  m_Layer: 0
+  m_Name: LojaManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &417316047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417316046}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456770339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1096,7 @@ MonoBehaviour:
   tentativasMaximas: 3
   tentativasAtuais: 0
   invencivel: 0
+  duracaoInvencibilidade: 1
 --- !u!114 &918275247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2361,3 +2393,4 @@ SceneRoots:
   - {fileID: 1909165610}
   - {fileID: 1636785515}
   - {fileID: 8262147428767316263}
+  - {fileID: 417316047}

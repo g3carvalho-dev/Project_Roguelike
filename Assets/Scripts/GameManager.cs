@@ -23,7 +23,10 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
             Destroy(gameObject);
     }
@@ -56,8 +59,6 @@ public class GameManager : MonoBehaviour
  
     void VerificarCheckpoint()
     {
-        AvancarSala(); // incrementa primeiro
-
         if (salaAtual % 3 == 0)
         {
             checkpointSala = salaAtual;
@@ -75,8 +76,6 @@ public class GameManager : MonoBehaviour
             else
                 Debug.Log("Chefe final!");
         }
- 
-        AvancarSala();
     }
  
     void AvancarSala()

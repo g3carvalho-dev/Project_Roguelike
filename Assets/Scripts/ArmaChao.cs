@@ -50,6 +50,7 @@ public class ArmaChao : MonoBehaviour
         // se o inv tá cheio, ele pega a arma e dropa a ativa.
         if (playerAttack.InventarioCheio())
         {
+            TrocarComArmaAtiva();
             Debug.Log("Inventario cheio! Maximo de " + playerAttack.capacidadeMaxima + " armas.");
             return;
         }

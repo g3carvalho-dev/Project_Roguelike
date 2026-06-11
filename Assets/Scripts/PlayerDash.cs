@@ -33,6 +33,9 @@ public class PlayerDash : MonoBehaviour
                 dashando = false;
                 rb.linearVelocity = Vector2.zero;
 
+                if (playerController != null)
+                    playerController.enabled = true;
+
                 PlayerStats stats = GetComponent<PlayerStats>();
                 if (stats != null)
                     stats.invencivel = false;
@@ -57,7 +60,9 @@ public class PlayerDash : MonoBehaviour
         timerDash = duracaoDash;
         timerCooldown = cooldownDash;
 
-        // invencivel durante o dash
+        if (playerController != null)
+            playerController.enabled = false;
+
         PlayerStats stats = GetComponent<PlayerStats>();
         if (stats != null)
             stats.invencivel = true;

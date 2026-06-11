@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Corações")]
+    [Header("Coracoes")]
     public int coracoesMaximos = 3;
     public int coracoesAtuais;
 
@@ -12,6 +12,8 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Invencibilidade")]
     public bool invencivel = false;
+    public float duracaoInvencibilidade = 1f;
+    private float timerInvencibilidade = 0f;
 
     void Start()
     {
@@ -19,12 +21,19 @@ public class PlayerStats : MonoBehaviour
         tentativasAtuais = tentativasMaximas;
     }
 
+    void Update()
+    {
+        if (timerInvencibilidade > 0)
+            timerInvencibilidade -= Time.deltaTime;
+    }
+
     public void ReceberDano()
     {
-        if (invencivel) return;
+        if (invencivel || timerInvencibilidade > 0) return;
 
         coracoesAtuais--;
-        Debug.Log("Corações: " + coracoesAtuais + "/" + coracoesMaximos);
+        timerInvencibilidade = duracaoInvencibilidade;
+        Debug.Log("Coracoes: " + coracoesAtuais + "/" + coracoesMaximos);
 
         if (coracoesAtuais <= 0)
             PerderTentativa();
@@ -38,7 +47,6 @@ public class PlayerStats : MonoBehaviour
         if (tentativasAtuais <= 0)
         {
             Debug.Log("Game Over!");
-            // tela de game over depois
         }
         else
         {
@@ -47,6 +55,4 @@ public class PlayerStats : MonoBehaviour
             GameManager.Instance.VoltarParaCheckpoint();
         }
     }
-
-    
 }

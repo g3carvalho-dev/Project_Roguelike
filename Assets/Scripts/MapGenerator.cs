@@ -77,8 +77,6 @@ public class MapGenerator : MonoBehaviour
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.transform.position = new Vector3(larguraSala - 1, alturaSala / 2, 0);
-
-        DesenharMapa(mapa);
         
     }
 

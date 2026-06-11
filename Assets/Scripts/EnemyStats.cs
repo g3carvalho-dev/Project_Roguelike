@@ -10,10 +10,13 @@ public class EnemyStats : MonoBehaviour
     public GameObject prefabMoeda;      // arraste o prefab da moeda aqui
     public int moedasMin = 1;
     public int moedasMax = 3;
+
+    private InimigosSpawner spawner;
  
     void Start()
     {
         vidaAtual = vidaMaxima;
+        spawner = FindObjectOfType<InimigosSpawner>();
     }
  
     public void ReceberDano(float dano)
@@ -33,7 +36,6 @@ public class EnemyStats : MonoBehaviour
  
         if (!isMiniChefe)
         {
-            InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
             if (spawner != null)
                 spawner.InimigoDerrotado();
          }

@@ -5,11 +5,8 @@ public class LojaManager : MonoBehaviour
 {
     public static LojaManager Instance;
 
-    [Header("Itens disponíveis na loja")]
+    [Header("Itens disponiveis na loja")]
     public List<ItemLoja> todosItens = new List<ItemLoja>();
-
-    [Header("Dinheiro do player")]
-    public int dinheiro = 0;
 
     private List<ItemLoja> itensAtuais = new List<ItemLoja>();
 
@@ -45,13 +42,14 @@ public class LojaManager : MonoBehaviour
 
         ItemLoja item = itensAtuais[index];
 
-        if (dinheiro < item.preco)
+        if (GameManager.Instance.moedas < item.preco)
         {
             Debug.Log("Dinheiro insuficiente!");
             return;
         }
 
-        dinheiro -= item.preco;
+        GameManager.Instance.moedas -= item.preco;
+        GameManager.Instance.onMoedasAtualizadas?.Invoke();
         AplicarBonus(item);
         itensAtuais.RemoveAt(index);
         Debug.Log("Comprou: " + item.nome);
