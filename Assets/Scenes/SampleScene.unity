@@ -2690,10 +2690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coracoesMaximos: 3
   coracoesAtuais: 0
-  tentativasMaximas: 3
-  tentativasAtuais: 0
   invencivel: 0
-  duracaoInvencibilidade: 1
 --- !u!114 &918275247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3044,6 +3041,8 @@ MonoBehaviour:
   minichefeDerrotado: 0
   prefabMiniChefe: {fileID: 1855685683450529806, guid: ade4fc629ab1be64db111648074d199d, type: 3}
   moedas: 0
+  tentativasMaximas: 3
+  tentativasAtuais: 0
 --- !u!1 &1458716450
 GameObject:
   m_ObjectHideFlags: 0
