@@ -76,6 +76,16 @@ public class GameManager : MonoBehaviour
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.Desbloquear();
+        PlayerFeiticos feiticos = FindObjectOfType<PlayerFeiticos>();
+        if (feiticos != null)
+        {
+            Feitico novoFeitico = new Feitico();
+            novoFeitico.nome = "Onda de Choque";
+            novoFeitico.tipo = TipoFeitico.Onda;
+            novoFeitico.dano = 30f;
+            novoFeitico.cooldown = 5f;
+            feiticos.DesbloquearFeitico(novoFeitico);
+        }
 
         VerificarCheckpoint();
     }
