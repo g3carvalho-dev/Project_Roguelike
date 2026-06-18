@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuPrincipal.unity
     guid: 268d64ad61d44874682697a0935f53a4
   - enabled: 1
-    path: Assets/Scenes/SelecaoArma.unity
-    guid: 4f957051fd7046248a806e603e2a204a
-  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 359550360db43c8419f694a708ea73d0
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 57dc00d7c566cbb4381ca0c0c1ee1b29
+  - enabled: 0
+    path: Assets/Scenes/SelecaoArma.unity
+    guid: 4f957051fd7046248a806e603e2a204a
   m_configObjects: {}

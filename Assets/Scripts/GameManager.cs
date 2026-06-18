@@ -18,19 +18,42 @@ public class GameManager : MonoBehaviour
  
     [Header("Moedas")]
     public int moedas = 0;
-    public System.Action onMoedasAtualizadas; // HUD escuta isso
- 
+    public System.Action onMoedasAtualizadas;
+
+    [Header("Tentativas")]
+    public int tentativasMaximas = 3;
+    public int tentativasAtuais;
+
     void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
         else
             Destroy(gameObject);
+
+        // Carrega tentativas salvas, ou começa com o máximo
+        tentativasAtuais = PlayerPrefs.GetInt("Tentativas", tentativasMaximas);
     }
- 
+
+    public void PerderTentativa()
+    {
+        tentativasAtuais--;
+        PlayerPrefs.SetInt("Tentativas", tentativasAtuais);
+        Debug.Log("Tentativas restantes: " + tentativasAtuais);
+
+        if (tentativasAtuais <= 0)
+        {
+            Debug.Log("Game Over!");
+            PlayerPrefs.SetInt("Tentativas", tentativasMaximas); // reseta para próxima run
+            SceneManager.LoadScene("GameOver");
+        }
+        else
+        {
+            Debug.Log("Voltando ao checkpoint!");
+            VoltarParaCheckpoint();
+        }
+    }
+
     public void AdicionarMoeda(int quantidade = 1)
     {
         moedas += quantidade;
@@ -69,6 +92,8 @@ public class GameManager : MonoBehaviour
  
     void VerificarCheckpoint()
     {
+        AvancarSala();
+
         if (salaAtual % 3 == 0)
         {
             checkpointSala = salaAtual;
@@ -111,6 +136,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
+    public void ResetarJogo()
+    {
+        tentativasAtuais = tentativasMaximas;
+        PlayerPrefs.SetInt("Tentativas", tentativasMaximas);
+        moedas = 0;
+        salaAtual = 1;
+        checkpointSala = 1;
+        salaLimpa = false;
+        minichefeDerrotado = false;
+    }
+
     void SpawnarMiniChefe()
     {
         if (prefabMiniChefe == null)
@@ -128,6 +164,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Mini chefe spawnado!");
     }
+
     public void AvancarParaProximaSala()
     {
         salaAtual++;
@@ -135,10 +172,8 @@ public class GameManager : MonoBehaviour
         minichefeDerrotado = false;
         Debug.Log("Entrando na sala " + salaAtual);
 
-        
         MapGenerator.Instance.GerarSala();
 
-       
         GameObject salaRepouso = GameObject.Find("SalaRepouso");
         if (salaRepouso != null)
             salaRepouso.SetActive(false);
@@ -147,12 +182,10 @@ public class GameManager : MonoBehaviour
         if (player != null)
             player.transform.position = new Vector3(2, 10, 0);
 
-        
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.Resetar();
 
-        
         InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
         if (spawner != null)
         {
@@ -164,5 +197,4 @@ public class GameManager : MonoBehaviour
             spawner.SpawnarInimigos();
         }
     }
-
 }
