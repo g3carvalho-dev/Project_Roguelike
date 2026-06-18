@@ -51,8 +51,8 @@ public class PlayerStats : MonoBehaviour
         else
         {
             coracoesAtuais = coracoesMaximos;
-            Debug.Log("Voltando ao checkpoint!");
-            GameManager.Instance.VoltarParaCheckpoint();
+            Debug.Log("Voltando para a sala de repouso para trocar equipamentos!");
+            GameManager.Instance.VoltarParaSalaDeRepousoTroca();
         }
     }
 }

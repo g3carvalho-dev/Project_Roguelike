@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
- 
+
     [Header("Progressao")]
     public int salaAtual = 1;
     public int totalSalas = 9;
@@ -15,11 +15,16 @@ public class GameManager : MonoBehaviour
     public bool minichefeDerrotado = false;
 
     public GameObject prefabMiniChefe;
- 
+
     [Header("Moedas")]
     public int moedas = 0;
-    public System.Action onMoedasAtualizadas; // HUD escuta isso
- 
+    public System.Action onMoedasAtualizadas;
+
+    [Header("Troca limitada na sala de repouso")]
+    public bool podeTrocarArma = true;
+    public bool podeTrocarReliquia = true;
+    public bool voltandoDeMorte = false;
+
     void Awake()
     {
         if (Instance == null)
@@ -30,21 +35,21 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
- 
+
     public void AdicionarMoeda(int quantidade = 1)
     {
         moedas += quantidade;
         Debug.Log("[Moedas] Total: " + moedas);
         onMoedasAtualizadas?.Invoke();
     }
- 
+
     public void SalaLimpa()
     {
         salaLimpa = true;
         Debug.Log("Sala " + salaAtual + " limpa! Spawnando mini chefe...");
         SpawnarMiniChefe();
     }
- 
+
     public void MiniChefeDerrotado()
     {
         minichefeDerrotado = true;
@@ -53,6 +58,7 @@ public class GameManager : MonoBehaviour
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.Desbloquear();
+
         PlayerFeiticos feiticos = FindObjectOfType<PlayerFeiticos>();
         if (feiticos != null)
         {
@@ -66,7 +72,7 @@ public class GameManager : MonoBehaviour
 
         VerificarCheckpoint();
     }
- 
+
     void VerificarCheckpoint()
     {
         if (salaAtual % 3 == 0)
@@ -74,7 +80,7 @@ public class GameManager : MonoBehaviour
             checkpointSala = salaAtual;
             PlayerPrefs.SetInt("Checkpoint", checkpointSala);
             Debug.Log("Checkpoint salvo na sala " + checkpointSala + "!");
- 
+
             if (salaAtual != 9)
             {
                 Debug.Log("Loja disponivel antes do chefe!");
@@ -87,7 +93,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Chefe final!");
         }
     }
- 
+
     void AvancarSala()
     {
         if (salaAtual >= totalSalas)
@@ -95,15 +101,29 @@ public class GameManager : MonoBehaviour
             Debug.Log("Vitoria!");
             return;
         }
- 
+
         salaAtual++;
         salaLimpa = false;
         minichefeDerrotado = false;
         Debug.Log("Avancando para sala " + salaAtual);
     }
 
+    public void VoltarParaSalaDeRepousoTroca()
+    {
+        salaAtual = 1;
+        salaLimpa = false;
+        minichefeDerrotado = false;
+        podeTrocarArma = true;
+        podeTrocarReliquia = true;
+        voltandoDeMorte = true;
+
+        Debug.Log("Voltando para sala de repouso para trocar equipamentos (1 vez cada)");
+        SceneManager.LoadScene("SampleScene");
+    }
+
     public void VoltarParaCheckpoint()
     {
+        voltandoDeMorte = false;
         salaAtual = checkpointSala;
         salaLimpa = false;
         minichefeDerrotado = false;
@@ -128,6 +148,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Mini chefe spawnado!");
     }
+
     public void AvancarParaProximaSala()
     {
         salaAtual++;
@@ -135,24 +156,20 @@ public class GameManager : MonoBehaviour
         minichefeDerrotado = false;
         Debug.Log("Entrando na sala " + salaAtual);
 
-        
         MapGenerator.Instance.GerarSala();
 
-       
         GameObject salaRepouso = GameObject.Find("SalaRepouso");
         if (salaRepouso != null)
             salaRepouso.SetActive(false);
-        
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
             player.transform.position = new Vector3(2, 10, 0);
 
-        
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.Resetar();
 
-        
         InimigosSpawner spawner = FindObjectOfType<InimigosSpawner>();
         if (spawner != null)
         {
@@ -164,5 +181,4 @@ public class GameManager : MonoBehaviour
             spawner.SpawnarInimigos();
         }
     }
-
 }
