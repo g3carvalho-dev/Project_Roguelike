@@ -78,7 +78,7 @@ public class PlayerAttack : MonoBehaviour
         }
 
         // Tecla Q alterna
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.T))
             Alternar();
 
         // Teclas 1 e 2 direto

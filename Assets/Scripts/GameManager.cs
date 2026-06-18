@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     public int moedas = 0;
     public System.Action onMoedasAtualizadas;
 
+    [Header("Tentativas")]
+    public int tentativasMaximas = 3;
+    public int tentativasAtuais;
+
     [Header("Troca limitada na sala de repouso")]
     public bool podeTrocarArma = true;
     public bool podeTrocarReliquia = true;
@@ -34,6 +38,27 @@ public class GameManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        tentativasAtuais = PlayerPrefs.GetInt("Tentativas", tentativasMaximas);
+    }
+
+    public void PerderTentativa()
+    {
+        tentativasAtuais--;
+        PlayerPrefs.SetInt("Tentativas", tentativasAtuais);
+        Debug.Log("Tentativas restantes: " + tentativasAtuais);
+
+        if (tentativasAtuais <= 0)
+        {
+            Debug.Log("Game Over!");
+            PlayerPrefs.SetInt("Tentativas", tentativasMaximas);
+            SceneManager.LoadScene("GameOver");
+        }
+        else
+        {
+            Debug.Log("Voltando para sala de repouso para trocar equipamentos (1 vez cada)");
+            VoltarParaSalaDeRepousoTroca();
+        }
     }
 
     public void AdicionarMoeda(int quantidade = 1)
@@ -75,6 +100,8 @@ public class GameManager : MonoBehaviour
 
     void VerificarCheckpoint()
     {
+        AvancarSala();
+
         if (salaAtual % 3 == 0)
         {
             checkpointSala = salaAtual;
@@ -117,7 +144,6 @@ public class GameManager : MonoBehaviour
         podeTrocarReliquia = true;
         voltandoDeMorte = true;
 
-        Debug.Log("Voltando para sala de repouso para trocar equipamentos (1 vez cada)");
         SceneManager.LoadScene("SampleScene");
     }
 
@@ -129,6 +155,17 @@ public class GameManager : MonoBehaviour
         minichefeDerrotado = false;
         Debug.Log("Voltando para checkpoint na sala " + checkpointSala);
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void ResetarJogo()
+    {
+        tentativasAtuais = tentativasMaximas;
+        PlayerPrefs.SetInt("Tentativas", tentativasMaximas);
+        moedas = 0;
+        salaAtual = 1;
+        checkpointSala = 1;
+        salaLimpa = false;
+        minichefeDerrotado = false;
     }
 
     void SpawnarMiniChefe()
