@@ -90,7 +90,8 @@ public class ArmaChao : MonoBehaviour
         ColetarArma();
     }
 
-    void ColetarArma()  {//aqui tá sobre a arma que vai ser coletada.
+    void ColetarArma()
+    {
         Arma novaArma = new Arma();
         novaArma.nome = nomeArma;
         novaArma.tipo = tipoArma;
@@ -101,7 +102,16 @@ public class ArmaChao : MonoBehaviour
         novaArma.prefabArmaChao = prefabArmaChao;
 
         bool coletou = playerAttack.AdicionarArma(novaArma);
-                if(coletou)
-                    Destroy(gameObject);
+
+        if (coletou)
+        {
+            Destroy(gameObject);
+
+            if (GameManager.Instance != null && GameManager.Instance.voltandoDeMorte)
+            {
+                GameManager.Instance.podeTrocarArma = false;
+                GameManager.Instance.VoltarParaCheckpoint();
+            }
+        }
     }
 }
