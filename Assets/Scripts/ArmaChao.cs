@@ -47,7 +47,6 @@ public class ArmaChao : MonoBehaviour
     {
         if (playerAttack == null) return;
 
-        // se o inv tá cheio, ele pega a arma e dropa a ativa.
         if (playerAttack.InventarioCheio())
         {
             TrocarComArmaAtiva();
@@ -55,37 +54,34 @@ public class ArmaChao : MonoBehaviour
             return;
         }
 
-        // vai pegar arma.
         ColetarArma();
     }
 
     void TrocarComArmaAtiva()
     {
         Arma armaAtiva = playerAttack.armaAtual;
+        GameObject prefab = playerAttack.GetPrefabArma(armaAtiva.nome);
 
-        if (armaAtiva == null || armaAtiva.prefabArmaChao == null)
+        if (armaAtiva == null || prefab == null)
         {
-            Debug.Log("[ARMA] Arma ativa sem prefab de chão, não é possível dropar.");
+            Debug.Log("[ARMA] Arma ativa sem prefab de chao, nao e possivel dropar.");
             return;
         }
 
-        // Instancia a arma ativa no chão
         Vector3 posicaoDrop = transform.position + new Vector3(0.5f, 0, 0);
-        GameObject armaDropada = Instantiate(armaAtiva.prefabArmaChao, posicaoDrop, Quaternion.identity);
+        GameObject armaDropada = Instantiate(prefab, posicaoDrop, Quaternion.identity);
 
-        // Configura os dados da arma dropada
         ArmaChao armaChaoScript = armaDropada.GetComponent<ArmaChao>();
-        armaChaoScript.nomeArma               = armaAtiva.nome;
-        armaChaoScript.tipoArma               = armaAtiva.tipo;
-        armaChaoScript.dano                   = armaAtiva.dano;
-        armaChaoScript.danoHeavy              = armaAtiva.danoHeavy;
-        armaChaoScript.intervaloAtaque        = armaAtiva.intervaloAtaque;
-        armaChaoScript.intervaloAtaqueHeavy   = armaAtiva.intervaloAtaqueHeavy;
-        armaChaoScript.prefabArmaChao         = armaAtiva.prefabArmaChao;
+        armaChaoScript.nomeArma = armaAtiva.nome;
+        armaChaoScript.tipoArma = armaAtiva.tipo;
+        armaChaoScript.dano = armaAtiva.dano;
+        armaChaoScript.danoHeavy = armaAtiva.danoHeavy;
+        armaChaoScript.intervaloAtaque = armaAtiva.intervaloAtaque;
+        armaChaoScript.intervaloAtaqueHeavy = armaAtiva.intervaloAtaqueHeavy;
+        armaChaoScript.prefabArmaChao = prefab;
 
-        Debug.Log($"[ARMA] Dropou: {armaAtiva.nome} no chão | Slot {playerAttack.indiceAtual + 1}");
+        Debug.Log($"[ARMA] Dropou: {armaAtiva.nome} no chao");
 
-        
         playerAttack.RemoverArmaAtiva();
         ColetarArma();
     }
