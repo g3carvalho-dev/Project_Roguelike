@@ -144,4 +144,4 @@ MonoBehaviour:
   nomeReliquia: Capacete Protetor
   descricao: Concede defesa ao aventureiro
   tipoBonus: 3
-  valorBonus: 1
+  valorBonus: 0.45
