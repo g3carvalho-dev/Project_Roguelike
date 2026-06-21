@@ -13,7 +13,7 @@ public class EnemyStats : MonoBehaviour
     public int moedasMax = 3;
 
     [Header("Drop de Reliquia")]
-    public GameObject prefabReliquiaChao;
+    public List<GameObject> prefabsReliquia = new List<GameObject>(); // arraste os 4 tipos aqui
     [Range(0f, 1f)] public float chanceDropReliquia = 0.1f;
 
     [Header("Animacao")]
@@ -110,13 +110,17 @@ public class EnemyStats : MonoBehaviour
 
     void DropReliquia()
     {
-        if (prefabReliquiaChao == null) return;
+        if (prefabsReliquia == null || prefabsReliquia.Count == 0) return;
 
         float chance = isMiniChefe ? 1f : chanceDropReliquia;
 
         if (Random.value <= chance)
         {
-            Instantiate(prefabReliquiaChao, transform.position, Quaternion.identity);
+            int indiceSorteado = Random.Range(0, prefabsReliquia.Count);
+            GameObject prefabEscolhido = prefabsReliquia[indiceSorteado];
+
+            if (prefabEscolhido != null)
+                Instantiate(prefabEscolhido, transform.position, Quaternion.identity);
         }
     }
 }

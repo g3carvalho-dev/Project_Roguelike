@@ -29,9 +29,16 @@ public class PlayerAttack : MonoBehaviour
 
     private float timerLight;
     private float timerHeavy;
-    private float scrollCooldown = 0f; // evita troca múltipla por scroll
+    private float scrollCooldown = 0f;
+
+    private PlayerReliquia playerReliquia;
 
     public System.Action onInventarioAtualizado;
+
+    void Start()
+    {
+        playerReliquia = GetComponent<PlayerReliquia>();
+    }
 
     void Update()
     {
@@ -62,7 +69,6 @@ public class PlayerAttack : MonoBehaviour
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        // Scroll com cooldown para evitar troca múltipla
         if (scrollCooldown <= 0f)
         {
             if (scroll > 0.05f)
@@ -77,11 +83,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        // Tecla Q alterna
-        if (Input.GetKeyDown(KeyCode.T))
-            Alternar();
-
-        // Teclas 1 e 2 direto
+        if (Input.GetKeyDown(KeyCode.T)) Alternar();
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelecionarArma(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelecionarArma(1);
     }
@@ -96,10 +98,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (indice < 0 || indice >= inventario.Count) return;
         if (indice == indiceAtual) return;
-
         indiceAtual = indice;
         onInventarioAtualizado?.Invoke();
-
         Debug.Log($"[ARMA] Slot {indice + 1} → {armaAtual.nome}");
     }
 
@@ -110,11 +110,9 @@ public class PlayerAttack : MonoBehaviour
             Debug.Log($"[ARMA] Inventário cheio!");
             return false;
         }
-
         inventario.Add(novaArma);
         indiceAtual = inventario.Count - 1;
         onInventarioAtualizado?.Invoke();
-
         Debug.Log($"[ARMA] Coletou: {novaArma.nome} → Slot {indiceAtual + 1}/{capacidadeMaxima}");
         return true;
     }
@@ -122,12 +120,10 @@ public class PlayerAttack : MonoBehaviour
     public void RemoverArmaAtiva()
     {
         if (inventario.Count == 0) return;
-
         string nomeRemovida = armaAtual.nome;
         inventario.RemoveAt(indiceAtual);
         indiceAtual = Mathf.Clamp(indiceAtual, 0, Mathf.Max(0, inventario.Count - 1));
         onInventarioAtualizado?.Invoke();
-
         Debug.Log($"[ARMA] Removeu: {nomeRemovida}");
     }
 
@@ -139,20 +135,25 @@ public class PlayerAttack : MonoBehaviour
         mouseMundo.z = 0;
         Vector2 direcao = (mouseMundo - transform.position).normalized;
 
-        float danoAtual = pesado ? armaAtual.danoHeavy : armaAtual.dano;
-        float alcance   = pesado ? 1.8f : 1.2f;
-        float area      = pesado ? 1.5f : 1f;
+        float danoBase  = pesado ? armaAtual.danoHeavy : armaAtual.dano;
+        float danoAtual = playerReliquia != null ? playerReliquia.AplicarBonusDano(danoBase) : danoBase;
+
+        float alcance = pesado ? 1.8f : 1.2f;
+        float area    = pesado ? 1.5f : 1f;
 
         if (armaAtual.tipo == TipoArma.Ranged)
-            AtaqueRanged(direcao);
+            AtaqueRanged(direcao, danoAtual);
         else
             AtaqueMelee(direcao, danoAtual, alcance, area);
     }
 
-    void AtaqueRanged(Vector2 direcao)
+    void AtaqueRanged(Vector2 direcao, float dano)
     {
         GameObject projetil = Instantiate(prefabProjetil, transform.position, Quaternion.identity);
-        projetil.GetComponent<Projetil>().Iniciar(direcao);
+        Projetil p = projetil.GetComponent<Projetil>();
+        p.Iniciar(direcao);
+        // Se o Projetil tiver campo de dano público, aplica aqui:
+        // p.dano = dano;
     }
 
     void AtaqueMelee(Vector2 direcao, float dano, float alcance, float area)

@@ -205,3 +205,5 @@ MonoBehaviour:
   moedasMax: 3
   prefabReliquiaChao: {fileID: 2739709413670997999, guid: 14d6a142ef5b1da46970105132d035c5, type: 3}
   chanceDropReliquia: 0.2
+  tempoAnimacaoMorte: 0.5
+  morreu: 0
