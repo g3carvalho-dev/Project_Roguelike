@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Corações")]
+    [Header("Coracoes")]
     public int coracoesMaximos = 3;
     public int coracoesAtuais;
 
@@ -29,9 +29,12 @@ public class PlayerStats : MonoBehaviour
         }
 
         coracoesAtuais--;
-        Debug.Log("Corações: " + coracoesAtuais + "/" + coracoesMaximos);
+        Debug.Log("Coracoes: " + coracoesAtuais + "/" + coracoesMaximos);
 
         if (coracoesAtuais <= 0)
+        {
+            coracoesAtuais = coracoesMaximos;
             GameManager.Instance.PerderTentativa();
+        }
     }
 }

@@ -27,6 +27,12 @@ public class PlayerAttack : MonoBehaviour
 
     public GameObject prefabProjetil;
 
+    [Header("Prefabs das Armas")]
+    public GameObject prefabArmaEspada;
+    public GameObject prefabArmaMachado;
+    public GameObject prefabArmaLanca;
+    public GameObject prefabArmaArco;
+
     private float timerLight;
     private float timerHeavy;
     private float scrollCooldown = 0f;
@@ -38,6 +44,27 @@ public class PlayerAttack : MonoBehaviour
     void Start()
     {
         playerReliquia = GetComponent<PlayerReliquia>();
+    }
+
+    public GameObject GetPrefabArma(string nomeArma)
+    {
+        string caminho = "";
+        switch (nomeArma)
+        {
+            case "Espada":  caminho = "ArmaEspada";  break;
+            case "Machado": caminho = "ArmaMachado"; break;
+            case "Lanca":   caminho = "ArmaLanca";   break;
+            case "Arco":    caminho = "ArmaArco";    break;
+            default:
+                Debug.LogError("Prefab nao encontrado para: " + nomeArma);
+                return null;
+        }
+
+        GameObject prefab = Resources.Load<GameObject>(caminho);
+        if (prefab == null)
+            Debug.LogError("Resources.Load falhou para: " + caminho);
+
+        return prefab;
     }
 
     void Update()
@@ -61,6 +88,36 @@ public class PlayerAttack : MonoBehaviour
             Atacar(true);
             timerHeavy = armaAtual.intervaloAtaqueHeavy;
         }
+
+        if (Input.GetKeyDown(KeyCode.O))
+            DroparArmaAtiva();
+    }
+
+    public void DroparArmaAtiva()
+    {
+        if (armaAtual == null) return;
+
+        GameObject prefab = GetPrefabArma(armaAtual.nome);
+        if (prefab == null)
+        {
+            Debug.Log("Sem prefab para dropar: " + armaAtual.nome);
+            return;
+        }
+
+        Vector3 posicaoDrop = transform.position + new Vector3(1f, 0, 0);
+        GameObject armaDropada = Instantiate(prefab, posicaoDrop, Quaternion.identity);
+
+        ArmaChao armaChaoScript = armaDropada.GetComponent<ArmaChao>();
+        armaChaoScript.nomeArma = armaAtual.nome;
+        armaChaoScript.tipoArma = armaAtual.tipo;
+        armaChaoScript.dano = armaAtual.dano;
+        armaChaoScript.danoHeavy = armaAtual.danoHeavy;
+        armaChaoScript.intervaloAtaque = armaAtual.intervaloAtaque;
+        armaChaoScript.intervaloAtaqueHeavy = armaAtual.intervaloAtaqueHeavy;
+        armaChaoScript.prefabArmaChao = prefab;
+
+        Debug.Log("Dropou: " + armaAtual.nome);
+        RemoverArmaAtiva();
     }
 
     void LidarComTroca()
@@ -83,7 +140,9 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.T)) Alternar();
+        if (Input.GetKeyDown(KeyCode.T))
+            Alternar();
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelecionarArma(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelecionarArma(1);
     }
