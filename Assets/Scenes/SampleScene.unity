@@ -161,7 +161,7 @@ PrefabInstance:
     - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 4781677070277077155, guid: e05aa308797909a459a54335da37208b, type: 3}
+      objectReference: {fileID: 7840203738306154628, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
     - target: {fileID: 3594952353980858484, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7245797481597556836, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 8.54
       objectReference: {fileID: 0}
     - target: {fileID: 7245797481597556836, guid: 8808ae714d1c7544984e99ca3f534410, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1477,7 +1477,7 @@ PrefabInstance:
     - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 4339843440311815483, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+      objectReference: {fileID: 2122000853190150262, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
     - target: {fileID: 3594952353980858484, guid: 38d21bfc363ce544facb3f4e42e12fb6, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2397,7 +2397,7 @@ PrefabInstance:
     - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 6419661573565978844, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+      objectReference: {fileID: 5627715737027951714, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
     - target: {fileID: 3594952353980858484, guid: 14bcee9ec39e99c49bcb76690898160d, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -2674,8 +2674,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventario: []
   indiceAtual: 0
-  capacidadeMaxima: 4
+  capacidadeMaxima: 2
   prefabProjetil: {fileID: 8739395613347183823, guid: b059236849c51dc448194b6a806014e6, type: 3}
+  prefabArmaEspada: {fileID: 0}
+  prefabArmaMachado: {fileID: 0}
+  prefabArmaLanca: {fileID: 0}
+  prefabArmaArco: {fileID: 0}
 --- !u!114 &918275246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3043,6 +3047,9 @@ MonoBehaviour:
   moedas: 0
   tentativasMaximas: 3
   tentativasAtuais: 0
+  podeTrocarArma: 1
+  podeTrocarReliquia: 1
+  voltandoDeMorte: 0
 --- !u!1 &1458716450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3649,7 +3656,7 @@ PrefabInstance:
     - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 8632984255864445469, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
+      objectReference: {fileID: -7271907065413991145, guid: b852b9315af08ac40bfb961c9b3c28c9, type: 3}
     - target: {fileID: 3594952353980858484, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -3664,7 +3671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7245797481597556836, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 11.05
       objectReference: {fileID: 0}
     - target: {fileID: 7245797481597556836, guid: a30ca661d053a9248a8172ca86aaec8e, type: 3}
       propertyPath: m_LocalPosition.y
