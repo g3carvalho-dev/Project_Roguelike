@@ -199,6 +199,10 @@ public class GameManager : MonoBehaviour
         if (salaRepouso != null)
             salaRepouso.SetActive(false);
 
+        ArmaChao[] armasChao = FindObjectsByType<ArmaChao>(FindObjectsSortMode.None);
+        foreach (ArmaChao arma in armasChao)
+            Destroy(arma.gameObject);
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
             player.transform.position = new Vector3(2, 10, 0);
