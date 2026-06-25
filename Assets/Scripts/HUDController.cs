@@ -33,7 +33,6 @@ public class HUDController : MonoBehaviour
         AtualizarMoedas();
     }
 
-    // Usa Update para garantir que pega o GameManager mesmo se ele inicializar depois
     private bool inscrito = false;
     void Update()
     {
@@ -44,9 +43,13 @@ public class HUDController : MonoBehaviour
             AtualizarMoedas();
         }
 
-        if (playerStats == null) return;
-        textoCoracoes.text   = "Coracoes: "  + playerStats.coracoesAtuais + "/" + playerStats.coracoesMaximos;
-        textoTentativas.text = "Tentativas: " + playerStats.tentativasAtuais;
+        // Corações do PlayerStats
+        if (playerStats != null)
+            textoCoracoes.text = "Coracoes: " + playerStats.coracoesAtuais + "/" + playerStats.coracoesMaximos;
+
+        // Tentativas agora vêm do GameManager
+        if (GameManager.Instance != null)
+            textoTentativas.text = "Tentativas: " + GameManager.Instance.tentativasAtuais;
     }
 
     void OnDestroy()

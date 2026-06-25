@@ -6,53 +6,39 @@ public class PlayerStats : MonoBehaviour
     public int coracoesMaximos = 3;
     public int coracoesAtuais;
 
-    [Header("Tentativas")]
-    public int tentativasMaximas = 3;
-    public int tentativasAtuais;
-
     [Header("Invencibilidade")]
     public bool invencivel = false;
-    public float duracaoInvencibilidade = 1f;
-    private float timerInvencibilidade = 0f;
+
+    private PlayerReliquia playerReliquia;
 
     void Start()
     {
         coracoesAtuais = coracoesMaximos;
-        tentativasAtuais = tentativasMaximas;
-    }
-
-    void Update()
-    {
-        if (timerInvencibilidade > 0)
-            timerInvencibilidade -= Time.deltaTime;
+        playerReliquia = GetComponent<PlayerReliquia>();
     }
 
     public void ReceberDano()
     {
-        if (invencivel || timerInvencibilidade > 0) return;
+        if (invencivel) return;
+
+        // Defesa dá chance de bloquear o golpe sem perder coração
+        if (playerReliquia != null && Random.value <= playerReliquia.bonusDefesa)
+        {
+            Debug.Log("Golpe bloqueado pela Defesa!");
+            return;
+        }
 
         coracoesAtuais--;
-        timerInvencibilidade = duracaoInvencibilidade;
         Debug.Log("Coracoes: " + coracoesAtuais + "/" + coracoesMaximos);
 
+        PlayerAnimator anim = GetComponent<PlayerAnimator>();
+        if (anim != null)
+            anim.TriggerDamage();
+
         if (coracoesAtuais <= 0)
-            PerderTentativa();
-    }
-
-    void PerderTentativa()
-    {
-        tentativasAtuais--;
-        Debug.Log("Tentativas restantes: " + tentativasAtuais);
-
-        if (tentativasAtuais <= 0)
-        {
-            Debug.Log("Game Over!");
-        }
-        else
         {
             coracoesAtuais = coracoesMaximos;
-            Debug.Log("Voltando ao checkpoint!");
-            GameManager.Instance.VoltarParaCheckpoint();
+            GameManager.Instance.PerderTentativa();
         }
     }
 }
