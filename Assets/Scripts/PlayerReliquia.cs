@@ -4,14 +4,19 @@ public class PlayerReliquia : MonoBehaviour
 {
     public Reliquia reliquiaEquipada;
 
+    [Header("Bônus acumulados (aplicados em qualquer arma)")]
+    public float bonusDano = 0f;
+    public float bonusVelocidade = 0f;
+    public float bonusDefesa = 0f; // % de redução de dano (0 a 1)
+
     private PlayerStats stats;
     private PlayerAttack attack;
     private PlayerController controller;
 
     void Start()
     {
-        stats = GetComponent<PlayerStats>();
-        attack = GetComponent<PlayerAttack>();
+        stats      = GetComponent<PlayerStats>();
+        attack     = GetComponent<PlayerAttack>();
         controller = GetComponent<PlayerController>();
     }
 
@@ -36,14 +41,11 @@ public class PlayerReliquia : MonoBehaviour
         switch (reliquia.tipo)
         {
             case TipoBonusReliquia.Dano:
-                if (attack != null && attack.armaAtual != null)
-                {
-                    attack.armaAtual.dano += reliquia.valor;
-                    attack.armaAtual.danoHeavy += reliquia.valor;
-                }
+                bonusDano += reliquia.valor;
                 break;
 
             case TipoBonusReliquia.Velocidade:
+                bonusVelocidade += reliquia.valor;
                 if (controller != null)
                     controller.velocidade += reliquia.valor;
                 break;
@@ -57,7 +59,8 @@ public class PlayerReliquia : MonoBehaviour
                 break;
 
             case TipoBonusReliquia.Defesa:
-                Debug.Log("Defesa aumentada em " + reliquia.valor);
+                bonusDefesa += reliquia.valor;
+                Debug.Log("Defesa total: " + (bonusDefesa * 100f) + "%");
                 break;
         }
     }
@@ -67,14 +70,11 @@ public class PlayerReliquia : MonoBehaviour
         switch (reliquia.tipo)
         {
             case TipoBonusReliquia.Dano:
-                if (attack != null && attack.armaAtual != null)
-                {
-                    attack.armaAtual.dano -= reliquia.valor;
-                    attack.armaAtual.danoHeavy -= reliquia.valor;
-                }
+                bonusDano -= reliquia.valor;
                 break;
 
             case TipoBonusReliquia.Velocidade:
+                bonusVelocidade -= reliquia.valor;
                 if (controller != null)
                     controller.velocidade -= reliquia.valor;
                 break;
@@ -88,8 +88,14 @@ public class PlayerReliquia : MonoBehaviour
                 break;
 
             case TipoBonusReliquia.Defesa:
-                Debug.Log("Defesa removida: " + reliquia.valor);
+                bonusDefesa -= reliquia.valor;
                 break;
         }
     }
+
+    // Chamado pelo PlayerAttack para aplicar o bônus de dano na hora do golpe
+    public float AplicarBonusDano(float danoBase) => danoBase + bonusDano;
+
+    // Chamado pelo PlayerStats para reduzir dano recebido
+    public float AplicarDefesa(float danoRecebido) => danoRecebido * (1f - Mathf.Clamp01(bonusDefesa));
 }

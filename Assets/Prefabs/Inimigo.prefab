@@ -167,7 +167,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &8459510357756347984
 MonoBehaviour:
@@ -204,8 +204,10 @@ MonoBehaviour:
   prefabMoeda: {fileID: 8319116454087566128, guid: 30a4e2a08c2c7234fb1d89ac1bad7f0d, type: 3}
   moedasMin: 1
   moedasMax: 3
-  prefabReliquiaChao: {fileID: 2739709413670997999, guid: 14d6a142ef5b1da46970105132d035c5, type: 3}
-  chanceDropReliquia: 0.05
+  prefabsReliquia:
+  - {fileID: 2739709413670997999, guid: a910f2317ecb02f43a17373452c9c3a6, type: 3}
+  - {fileID: 2739709413670997999, guid: 9b6232848bb05d94eb0bbde811d259ee, type: 3}
+  chanceDropReliquia: 0.25
   tempoAnimacaoMorte: 0.5
   morreu: 0
 --- !u!95 &-7601733384381769813
