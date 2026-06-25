@@ -21,6 +21,10 @@ public class PlayerStats : MonoBehaviour
         coracoesAtuais--;
         Debug.Log("Coracoes: " + coracoesAtuais + "/" + coracoesMaximos);
 
+        PlayerAnimator anim = GetComponent<PlayerAnimator>();
+        if (anim != null)
+            anim.TriggerDamage();
+
         if (coracoesAtuais <= 0)
         {
             coracoesAtuais = coracoesMaximos;
