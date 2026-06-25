@@ -6,7 +6,7 @@ public class PlayerDash : MonoBehaviour
     public float duracaoDash = 0.2f;
     public float cooldownDash = 1f;
 
-    private bool dashando = false;
+    public bool dashando = false;
     private float timerDash = 0f;
     private float timerCooldown = 0f;
     private Vector2 direcaoDash;
