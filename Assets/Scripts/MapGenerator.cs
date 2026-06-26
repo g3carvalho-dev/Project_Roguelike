@@ -8,9 +8,13 @@ public class MapGenerator : MonoBehaviour
     public Tilemap tilemapChao;
     public Tilemap tilemapParedes;
 
-    [Header("Sprites")]
+    [Header("Sprites — Sala de Combate")]
     public Sprite spriteChao;
     public Sprite spriteParede;
+
+    [Header("Sprites — Sala de Repouso")]
+    public Sprite spriteChaoRepouso;
+    public Sprite spriteParedeRepouso;
 
     [Header("Tamanho da Sala")]
     public int larguraSala = 20;
@@ -37,13 +41,16 @@ public class MapGenerator : MonoBehaviour
 
     void CriarTiles()
     {
+        bool isRepouso = GameManager.Instance != null && GameManager.Instance.salaAtual == 1;
+
+        Sprite chaoUsado   = isRepouso && spriteChaoRepouso   != null ? spriteChaoRepouso   : spriteChao;
+        Sprite paredeUsado = isRepouso && spriteParedeRepouso != null ? spriteParedeRepouso : spriteParede;
+
         tileChao = ScriptableObject.CreateInstance<Tile>();
-        tileChao.sprite = spriteChao;
-        tileChao.color = new Color(0.7f, 0.7f, 0.7f);
+        tileChao.sprite = chaoUsado;
 
         tileParede = ScriptableObject.CreateInstance<Tile>();
-        tileParede.sprite = spriteParede;
-        tileParede.color = new Color(0.3f, 0.3f, 0.3f);
+        tileParede.sprite = paredeUsado;
     }
 
     public void GerarSala()
