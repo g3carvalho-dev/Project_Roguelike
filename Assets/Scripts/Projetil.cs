@@ -8,6 +8,10 @@ public class Projetil : MonoBehaviour
     public void Iniciar(Vector2 dir)
     {
         direcao = dir.normalized;
+
+        // Rotaciona o projétil para apontar na direção do movimento
+        float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg - 90f;
+        transform.rotation = Quaternion.Euler(0, 0, angulo);
     }
 
     void Update()
