@@ -21,6 +21,8 @@ public class ArmaChao : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
+
         if (playerPerto && Input.GetKeyDown(KeyCode.C))
             TentarColetar();
     }

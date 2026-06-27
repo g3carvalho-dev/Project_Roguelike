@@ -21,6 +21,8 @@ public class PlayerDash : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
+
         timerCooldown -= Time.deltaTime;
 
         if (dashando)

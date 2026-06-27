@@ -12,6 +12,8 @@ public class PlayerFeiticos : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
+
         timerFeitico1 -= Time.deltaTime;
         timerFeitico2 -= Time.deltaTime;
 

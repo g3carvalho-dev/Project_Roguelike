@@ -70,6 +70,8 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
+
         LidarComTroca();
 
         if (armaAtual == null) return;

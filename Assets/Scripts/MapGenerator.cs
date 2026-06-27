@@ -43,7 +43,7 @@ public class MapGenerator : MonoBehaviour
     {
         bool isRepouso = GameManager.Instance != null && GameManager.Instance.salaAtual == 1;
 
-        Sprite chaoUsado   = isRepouso && spriteChaoRepouso   != null ? spriteChaoRepouso   : spriteChao;
+        Sprite chaoUsado = isRepouso && spriteChaoRepouso != null ? spriteChaoRepouso : spriteChao;
         Sprite paredeUsado = isRepouso && spriteParedeRepouso != null ? spriteParedeRepouso : spriteParede;
 
         tileChao = ScriptableObject.CreateInstance<Tile>();
@@ -57,12 +57,10 @@ public class MapGenerator : MonoBehaviour
     {
         int[,] mapa = new int[alturaSala, larguraSala];
 
-        
         for (int y = 0; y < alturaSala; y++)
             for (int x = 0; x < larguraSala; x++)
                 mapa[y, x] = 0;
 
-        
         for (int x = 0; x < larguraSala; x++)
         {
             mapa[0, x] = 1;
@@ -74,17 +72,14 @@ public class MapGenerator : MonoBehaviour
             mapa[y, larguraSala - 1] = 1;
         }
 
-        
         int portaY = alturaSala / 2;
         mapa[portaY, larguraSala - 1] = 0;
 
         DesenharMapa(mapa);
 
-        
         Porta porta = FindObjectOfType<Porta>();
         if (porta != null)
             porta.transform.position = new Vector3(larguraSala - 1, alturaSala / 2, 0);
-        
     }
 
     void DesenharMapa(int[,] mapa)

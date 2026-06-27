@@ -30,9 +30,9 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        // Para tudo se o inimigo já morreu
         if (stats != null && stats.morreu) return;
         if (player == null) return;
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
 
         timerDano -= Time.deltaTime;
 

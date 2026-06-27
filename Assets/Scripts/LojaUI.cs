@@ -11,15 +11,27 @@ public class LojaUI : MonoBehaviour
     public TextMeshProUGUI[] precosItens;
     public Button[] botoesComprar;
 
+    private bool lojaAberta = false;
+
     void Start()
     {
         painelLoja.SetActive(false);
     }
 
+    void Update()
+    {
+        if (lojaAberta && Input.GetKeyDown(KeyCode.Escape))
+            FecharLoja();
+    }
+
     public void AbrirLoja(System.Collections.Generic.List<ItemLoja> itens)
     {
+        Debug.Log("LojaUI.AbrirLoja chamada com " + itens.Count + " itens");
         painelLoja.SetActive(true);
-        Time.timeScale = 0f; // pausa o jogo
+        lojaAberta = true;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.jogoPausado = true;
 
         for (int i = 0; i < nomesItens.Length; i++)
         {
@@ -32,6 +44,7 @@ public class LojaUI : MonoBehaviour
                 int index = i;
                 botoesComprar[i].onClick.RemoveAllListeners();
                 botoesComprar[i].onClick.AddListener(() => Comprar(index));
+                Debug.Log("Listener adicionado no botao " + i + " para item: " + itens[i].nome);
             }
             else
             {
@@ -44,6 +57,14 @@ public class LojaUI : MonoBehaviour
 
     void Comprar(int index)
     {
+        Debug.Log("Botao clicado! Index: " + index);
+
+        if (LojaManager.Instance == null)
+        {
+            Debug.LogError("LojaManager.Instance é null!");
+            return;
+        }
+
         LojaManager.Instance.ComprarItem(index);
         FecharLoja();
     }
@@ -51,6 +72,9 @@ public class LojaUI : MonoBehaviour
     public void FecharLoja()
     {
         painelLoja.SetActive(false);
-        Time.timeScale = 1f;
+        lojaAberta = false;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.jogoPausado = false;
     }
 }

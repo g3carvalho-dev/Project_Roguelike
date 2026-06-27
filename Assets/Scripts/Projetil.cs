@@ -17,6 +17,8 @@ public class Projetil : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.jogoPausado) return;
+
         transform.position += (Vector3)(direcao * velocidade * Time.deltaTime);
     }
 

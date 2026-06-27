@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     public bool podeTrocarReliquia = true;
     public bool voltandoDeMorte = false;
 
+    [Header("Pausa")]
+    public bool jogoPausado = false;
+
     void Awake()
     {
         if (Instance == null)
