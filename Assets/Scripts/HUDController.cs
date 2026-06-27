@@ -25,6 +25,9 @@ public class HUDController : MonoBehaviour
     public Image slotArma;
     public Image iconeArma;
 
+    [Header("Retícula")]
+    public RectTransform reticula;
+
     void Awake()
     {
         if (playerAttack == null)
@@ -32,6 +35,8 @@ public class HUDController : MonoBehaviour
 
         if (iconeArma != null)
             iconeArma.preserveAspect = true;
+
+        Cursor.visible = false;
     }
 
     void Start()
@@ -61,6 +66,15 @@ public class HUDController : MonoBehaviour
             textoTentativas.text = "Tentativas: " + GameManager.Instance.tentativasAtuais;
 
         AnimarMoeda();
+        MoverReticula();
+    }
+
+    void MoverReticula()
+    {
+        if (reticula == null) return;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 0;
+        reticula.position = mousePos;
     }
 
     void AnimarMoeda()
@@ -78,6 +92,8 @@ public class HUDController : MonoBehaviour
 
     void OnDestroy()
     {
+        Cursor.visible = true;
+
         if (playerAttack != null)
             playerAttack.onInventarioAtualizado -= AtualizarSlots;
 

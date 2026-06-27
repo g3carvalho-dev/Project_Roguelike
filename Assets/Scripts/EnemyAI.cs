@@ -21,6 +21,11 @@ public class EnemyAI : MonoBehaviour
         rb       = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         stats    = GetComponent<EnemyStats>();
+
+        if (stats != null && (stats.isMiniChefe || stats.isBoss))
+            danoContato = 1f;
+        else
+            danoContato = 0.5f;
     }
 
     void Update()
