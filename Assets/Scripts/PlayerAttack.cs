@@ -14,6 +14,7 @@ public class Arma
     public float intervaloAtaqueHeavy;
     public GameObject prefabProjetil;
     public GameObject prefabArmaChao;
+    public Sprite sprite;
 }
 
 public class PlayerAttack : MonoBehaviour
@@ -115,6 +116,13 @@ public class PlayerAttack : MonoBehaviour
         armaChaoScript.intervaloAtaque = armaAtual.intervaloAtaque;
         armaChaoScript.intervaloAtaqueHeavy = armaAtual.intervaloAtaqueHeavy;
         armaChaoScript.prefabArmaChao = prefab;
+
+        if (armaAtual.sprite != null)
+        {
+            SpriteRenderer sr = armaDropada.GetComponent<SpriteRenderer>();
+            if (sr != null)
+                sr.sprite = armaAtual.sprite;
+        }
 
         Debug.Log("Dropou: " + armaAtual.nome);
         RemoverArmaAtiva();

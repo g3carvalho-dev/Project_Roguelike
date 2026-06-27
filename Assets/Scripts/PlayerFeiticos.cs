@@ -69,6 +69,7 @@ public class PlayerFeiticos : MonoBehaviour
         if (stats != null)
         {
             stats.coracoesAtuais = Mathf.Min(stats.coracoesAtuais + 1, stats.coracoesMaximos);
+            stats.onVidaAtualizada?.Invoke();
             Debug.Log("Curou 1 coracao!");
         }
     }

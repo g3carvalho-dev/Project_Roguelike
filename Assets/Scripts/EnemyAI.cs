@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
     public float velocidade = 2f;
     public float distanciaDeteccao = 8f;
-    public float danoContato = 10f;
+    public float danoContato = 1f;
     public float intervaloDano = 1f;
 
     private Rigidbody2D rb;
@@ -46,7 +46,7 @@ public class EnemyAI : MonoBehaviour
                 PlayerStats playerStats = player.GetComponent<PlayerStats>();
                 if (playerStats != null)
                 {
-                    playerStats.ReceberDano();
+                    playerStats.ReceberDano(danoContato);
                     timerDano = intervaloDano;
 
                     if (animator != null)

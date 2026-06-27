@@ -67,7 +67,7 @@ public class LojaManager : MonoBehaviour
                 if (stats != null)
                 {
                     stats.coracoesAtuais = Mathf.Min(
-                        stats.coracoesAtuais + (int)item.valorBonus,
+                        stats.coracoesAtuais + item.valorBonus,
                         stats.coracoesMaximos
                     );
                     Debug.Log("Vida restaurada!");
