@@ -219,8 +219,7 @@ public class PlayerAttack : MonoBehaviour
         GameObject projetil = Instantiate(prefabProjetil, transform.position, Quaternion.identity);
         Projetil p = projetil.GetComponent<Projetil>();
         p.Iniciar(direcao);
-        // Se o Projetil tiver campo de dano público, aplica aqui:
-        // p.dano = dano;
+        p.dano = dano;
     }
 
     void AtaqueMelee(Vector2 direcao, float dano, float alcance, float area)

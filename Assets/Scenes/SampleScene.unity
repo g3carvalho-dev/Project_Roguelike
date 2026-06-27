@@ -3215,6 +3215,12 @@ MonoBehaviour:
   areaSpawnX: 20
   areaSpawnY: 15
   centroSala: {x: 20, y: 24}
+  animatorsInimigoPorSala:
+  - {fileID: 9100000, guid: 8030eeaa802e9604388c4d2f656ff7bf, type: 2}
+  - {fileID: 9100000, guid: 169bb3f4339789046a5e030245c9e9e5, type: 2}
+  - {fileID: 9100000, guid: c90d4804a00dd564387f14cb66102dbe, type: 2}
+  - {fileID: 9100000, guid: 6832a84091cdaa64d81196dd1c332452, type: 2}
+  - {fileID: 9100000, guid: d9483939cc803224390946a516585802, type: 2}
   inimigosMortos: 0
   salaLimpa: 0
 --- !u!4 &1236196945
@@ -3360,6 +3366,17 @@ MonoBehaviour:
   salaLimpa: 0
   minichefeDerrotado: 0
   prefabMiniChefe: {fileID: 1855685683450529806, guid: ade4fc629ab1be64db111648074d199d, type: 3}
+  prefabBoss: {fileID: 0}
+  animatorsMiniChefePorSala:
+  - {fileID: 9100000, guid: 8030eeaa802e9604388c4d2f656ff7bf, type: 2}
+  - {fileID: 9100000, guid: 169bb3f4339789046a5e030245c9e9e5, type: 2}
+  - {fileID: 9100000, guid: c90d4804a00dd564387f14cb66102dbe, type: 2}
+  - {fileID: 9100000, guid: 6832a84091cdaa64d81196dd1c332452, type: 2}
+  - {fileID: 9100000, guid: d9483939cc803224390946a516585802, type: 2}
+  animatorsBossPorSala:
+  - {fileID: 9100000, guid: 8030eeaa802e9604388c4d2f656ff7bf, type: 2}
+  - {fileID: 9100000, guid: cdd3ba4b39548ee419c105346bc24005, type: 2}
+  - {fileID: 9100000, guid: d9483939cc803224390946a516585802, type: 2}
   moedas: 0
   tentativasMaximas: 3
   tentativasAtuais: 0

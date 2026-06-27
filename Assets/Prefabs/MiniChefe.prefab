@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5241661354022077289}
   - component: {fileID: 6811420525308586448}
   - component: {fileID: 278459818570980999}
+  - component: {fileID: -2011275908642298247}
   m_Layer: 0
   m_Name: MiniChefe
   m_TagString: Inimigo
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,8 +86,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: f04a53641ca5b6549b0cbd597714104f, type: 3}
-  m_Color: {r: 0.9169811, g: 0.55656105, b: 0.06747586, a: 1}
+  m_Sprite: {fileID: -3192728936663631186, guid: 9e644a3da74dba943b1f345349434bbd, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -152,21 +153,21 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8, y: 8}
+    pivot: {x: 0.5555556, y: -0.5862069}
+    oldSize: {x: 0.18, y: 0.29}
     newSize: {x: 8, y: 8}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &6811420525308586448
 MonoBehaviour:
@@ -200,10 +201,33 @@ MonoBehaviour:
   vidaMaxima: 150
   vidaAtual: 0
   isMiniChefe: 1
-  prefabMoeda: {fileID: 0}
-  moedasMin: 1
-  moedasMax: 3
-  prefabReliquiaChao: {fileID: 2739709413670997999, guid: 14d6a142ef5b1da46970105132d035c5, type: 3}
+  isBoss: 0
+  prefabMoeda: {fileID: 8319116454087566128, guid: 30a4e2a08c2c7234fb1d89ac1bad7f0d, type: 3}
+  moedasMin: 3
+  moedasMax: 10
+  prefabsReliquia: []
   chanceDropReliquia: 0.2
   tempoAnimacaoMorte: 0.5
   morreu: 0
+--- !u!95 &-2011275908642298247
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855685683450529806}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cdd3ba4b39548ee419c105346bc24005, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
