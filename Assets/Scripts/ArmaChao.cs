@@ -80,6 +80,13 @@ public class ArmaChao : MonoBehaviour
         armaChaoScript.intervaloAtaqueHeavy = armaAtiva.intervaloAtaqueHeavy;
         armaChaoScript.prefabArmaChao = prefab;
 
+        if (armaAtiva.sprite != null)
+        {
+            SpriteRenderer sr = armaDropada.GetComponent<SpriteRenderer>();
+            if (sr != null)
+                sr.sprite = armaAtiva.sprite;
+        }
+
         Debug.Log($"[ARMA] Dropou: {armaAtiva.nome} no chao");
 
         playerAttack.RemoverArmaAtiva();
@@ -96,6 +103,10 @@ public class ArmaChao : MonoBehaviour
         novaArma.intervaloAtaque = intervaloAtaque;
         novaArma.intervaloAtaqueHeavy = intervaloAtaqueHeavy;
         novaArma.prefabArmaChao = prefabArmaChao;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+            novaArma.sprite = sr.sprite;
 
         bool coletou = playerAttack.AdicionarArma(novaArma);
 

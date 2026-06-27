@@ -53,8 +53,8 @@ public class PlayerReliquia : MonoBehaviour
             case TipoBonusReliquia.VidaMaxima:
                 if (stats != null)
                 {
-                    stats.coracoesMaximos += (int)reliquia.valor;
-                    stats.coracoesAtuais += (int)reliquia.valor;
+                    stats.coracoesMaximos += reliquia.valor;
+                    stats.coracoesAtuais += reliquia.valor;
                 }
                 break;
 
@@ -82,7 +82,7 @@ public class PlayerReliquia : MonoBehaviour
             case TipoBonusReliquia.VidaMaxima:
                 if (stats != null)
                 {
-                    stats.coracoesMaximos -= (int)reliquia.valor;
+                    stats.coracoesMaximos -= reliquia.valor;
                     stats.coracoesAtuais = Mathf.Min(stats.coracoesAtuais, stats.coracoesMaximos);
                 }
                 break;
