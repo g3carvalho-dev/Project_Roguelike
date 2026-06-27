@@ -3,6 +3,7 @@ using UnityEngine;
 public class Projetil : MonoBehaviour
 {
     public float velocidade = 10f;
+    public float dano = 10f;
     private Vector2 direcao;
 
     public void Iniciar(Vector2 dir)
@@ -31,7 +32,7 @@ public class Projetil : MonoBehaviour
         {
             EnemyStats stats = other.GetComponent<EnemyStats>();
             if (stats != null)
-                stats.ReceberDano(10f);
+                stats.ReceberDano(dano);
             Destroy(gameObject);
         }
     }

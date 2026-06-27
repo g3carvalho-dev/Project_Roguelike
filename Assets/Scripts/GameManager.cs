@@ -15,6 +15,13 @@ public class GameManager : MonoBehaviour
     public bool minichefeDerrotado = false;
 
     public GameObject prefabMiniChefe;
+    public GameObject prefabBoss;
+
+    [Header("Animators do Mini Chefe (0=Sala 2, 1=Sala 4, 2=Sala 5, 3=Sala 7, 4=Sala 8)")]
+    public RuntimeAnimatorController[] animatorsMiniChefePorSala;
+
+    [Header("Animators do Boss (índice 0 = sala 3, 1 = sala 6, 2 = sala 9)")]
+    public RuntimeAnimatorController[] animatorsBossPorSala;
 
     [Header("Moedas")]
     public int moedas = 0;
@@ -71,7 +78,10 @@ public class GameManager : MonoBehaviour
     public void SalaLimpa()
     {
         salaLimpa = true;
-        Debug.Log("Sala " + salaAtual + " limpa! Spawnando mini chefe...");
+        Debug.Log("Sala " + salaAtual + " limpa!");
+
+        // Salas de boss não têm inimigos comuns, não chega aqui
+        // Minichefe só nas salas 2,4,5,7,8
         SpawnarMiniChefe();
     }
 
@@ -95,13 +105,7 @@ public class GameManager : MonoBehaviour
             feiticos.DesbloquearFeitico(novoFeitico);
         }
 
-        VerificarCheckpoint();
-    }
-
-    void VerificarCheckpoint()
-    {
-        AvancarSala();
-
+        // Checkpoint sem avançar sala — a porta faz isso ao ser atravessada
         if (salaAtual % 3 == 0)
         {
             checkpointSala = salaAtual;
@@ -168,7 +172,7 @@ public class GameManager : MonoBehaviour
         minichefeDerrotado = false;
     }
 
-    void SpawnarMiniChefe()
+   void SpawnarMiniChefe()
     {
         if (prefabMiniChefe == null)
         {
@@ -179,11 +183,98 @@ public class GameManager : MonoBehaviour
         Vector3 posicao = new Vector3(15, 15, 0);
         GameObject miniChefe = Instantiate(prefabMiniChefe, posicao, Quaternion.identity);
 
+        // Aplica AnimatorController do mini chefe baseado apenas nas salas válidas
+        if (animatorsMiniChefePorSala != null && animatorsMiniChefePorSala.Length > 0)
+        {
+            int idx = -1;
+            
+            // Mapeia a sala atual para o índice correto no Inspector sem pular números
+            switch (salaAtual)
+            {
+                case 2: idx = 0; break;
+                case 4: idx = 1; break;
+                case 5: idx = 2; break;
+                case 7: idx = 3; break;
+                case 8: idx = 4; break;
+            }
+
+            // Se for um índice válido, aplica a animação correspondente
+            if (idx >= 0 && idx < animatorsMiniChefePorSala.Length)
+            {
+                RuntimeAnimatorController ac = animatorsMiniChefePorSala[idx];
+                if (ac != null)
+                {
+                    Animator anim = miniChefe.GetComponent<Animator>();
+                    if (anim != null) anim.runtimeAnimatorController = ac;
+                }
+            }
+        }
+
         EnemyAI ai = miniChefe.GetComponent<EnemyAI>();
         if (ai != null)
             ai.player = GameObject.FindWithTag("Player").transform;
 
         Debug.Log("Mini chefe spawnado!");
+    }
+    public bool EhSalaDeBoss() => salaAtual == 3 || salaAtual == 6 || salaAtual == 9;
+
+    public void BossDerrotado()
+    {
+        minichefeDerrotado = true;
+        Debug.Log("Boss derrotado! Proxima sala liberada.");
+
+        Porta porta = FindObjectOfType<Porta>();
+        if (porta != null)
+            porta.Desbloquear();
+
+        checkpointSala = salaAtual;
+        PlayerPrefs.SetInt("Checkpoint", checkpointSala);
+        Debug.Log("Checkpoint salvo na sala " + checkpointSala + "!");
+
+        if (salaAtual != 9)
+        {
+            Debug.Log("Loja disponivel apos o boss!");
+            if (LojaManager.Instance != null)
+                LojaManager.Instance.AbrirLoja();
+            else
+                Debug.LogError("LojaManager.Instance esta nulo!");
+        }
+        else
+            Debug.Log("Chefe final derrotado! Vitoria!");
+    }
+
+    public void SpawnarBoss()
+    {
+        if (prefabBoss == null)
+        {
+            Debug.LogError("Prefab do Boss nao conectado!");
+            return;
+        }
+
+        Vector3 posicao = new Vector3(15, 15, 0);
+        GameObject boss = Instantiate(prefabBoss, posicao, Quaternion.identity);
+
+        if (animatorsBossPorSala != null && animatorsBossPorSala.Length > 0)
+        {
+            int idx = salaAtual == 3 ? 0 : salaAtual == 6 ? 1 : 2;
+            idx = Mathf.Clamp(idx, 0, animatorsBossPorSala.Length - 1);
+            RuntimeAnimatorController ac = animatorsBossPorSala[idx];
+            if (ac != null)
+            {
+                Animator anim = boss.GetComponent<Animator>();
+                if (anim != null) anim.runtimeAnimatorController = ac;
+            }
+        }
+
+        EnemyAI ai = boss.GetComponent<EnemyAI>();
+        if (ai != null)
+            ai.player = GameObject.FindWithTag("Player").transform;
+
+        EnemyStats stats = boss.GetComponent<EnemyStats>();
+        if (stats != null)
+            stats.isBoss = true;
+
+        Debug.Log("Boss spawnado na sala " + salaAtual + "!");
     }
 
     public void AvancarParaProximaSala()

@@ -41,7 +41,7 @@ public class EnemyAI : MonoBehaviour
             if (animator != null)
                 animator.SetBool(HashRun, true);
 
-            if (distancia < 0.6f && timerDano <= 0)
+            if (distancia < 0.1f && timerDano <= 0)
             {
                 PlayerStats playerStats = player.GetComponent<PlayerStats>();
                 if (playerStats != null)

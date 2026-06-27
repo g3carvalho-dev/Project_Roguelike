@@ -6,6 +6,7 @@ public class EnemyStats : MonoBehaviour
     public float vidaMaxima = 50f;
     public float vidaAtual;
     public bool isMiniChefe = false;
+    public bool isBoss = false;
 
     [Header("Drop de Moedas")]
     public GameObject prefabMoeda;
@@ -68,7 +69,13 @@ public class EnemyStats : MonoBehaviour
         DropMoedas();
         DropReliquia();
 
-        if (!isMiniChefe)
+        if (isBoss)
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.BossDerrotado();
+            Destroy(gameObject);
+        }
+        else if (!isMiniChefe)
         {
             if (spawner != null)
                 spawner.InimigoDerrotado();
@@ -87,7 +94,6 @@ public class EnemyStats : MonoBehaviour
         else
         {
             // Mini chefe: sem animação de morte, destroy imediato
-            // para não quebrar o fluxo da loja
             if (GameManager.Instance != null)
                 GameManager.Instance.MiniChefeDerrotado();
 

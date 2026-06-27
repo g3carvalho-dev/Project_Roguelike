@@ -201,13 +201,13 @@ MonoBehaviour:
   vidaMaxima: 50
   vidaAtual: 0
   isMiniChefe: 0
+  isBoss: 0
   prefabMoeda: {fileID: 8319116454087566128, guid: 30a4e2a08c2c7234fb1d89ac1bad7f0d, type: 3}
   moedasMin: 1
   moedasMax: 3
   prefabsReliquia:
-  - {fileID: 2739709413670997999, guid: a910f2317ecb02f43a17373452c9c3a6, type: 3}
   - {fileID: 2739709413670997999, guid: 9b6232848bb05d94eb0bbde811d259ee, type: 3}
-  chanceDropReliquia: 0.25
+  chanceDropReliquia: 1
   tempoAnimacaoMorte: 0.5
   morreu: 0
 --- !u!95 &-7601733384381769813
