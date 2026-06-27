@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject prefabMiniChefe;
     public GameObject prefabBoss;
 
-    [Header("Animators do Mini Chefe (0=Sala 2, 1=Sala 4, 2=Sala 5, 3=Sala 7, 4=Sala 8)")]
+    [Header("Animators do Mini Chefe por Sala (índice 0 = sala 2, 1 = sala 3...)")]
     public RuntimeAnimatorController[] animatorsMiniChefePorSala;
 
     [Header("Animators do Boss (índice 0 = sala 3, 1 = sala 6, 2 = sala 9)")]
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
         minichefeDerrotado = false;
     }
 
-   void SpawnarMiniChefe()
+    void SpawnarMiniChefe()
     {
         if (prefabMiniChefe == null)
         {
@@ -183,30 +183,15 @@ public class GameManager : MonoBehaviour
         Vector3 posicao = new Vector3(15, 15, 0);
         GameObject miniChefe = Instantiate(prefabMiniChefe, posicao, Quaternion.identity);
 
-        // Aplica AnimatorController do mini chefe baseado apenas nas salas válidas
+        // Aplica AnimatorController do mini chefe baseado na sala atual
         if (animatorsMiniChefePorSala != null && animatorsMiniChefePorSala.Length > 0)
         {
-            int idx = -1;
-            
-            // Mapeia a sala atual para o índice correto no Inspector sem pular números
-            switch (salaAtual)
+            int idx = Mathf.Clamp(salaAtual - 2, 0, animatorsMiniChefePorSala.Length - 1);
+            RuntimeAnimatorController ac = animatorsMiniChefePorSala[idx];
+            if (ac != null)
             {
-                case 2: idx = 0; break;
-                case 4: idx = 1; break;
-                case 5: idx = 2; break;
-                case 7: idx = 3; break;
-                case 8: idx = 4; break;
-            }
-
-            // Se for um índice válido, aplica a animação correspondente
-            if (idx >= 0 && idx < animatorsMiniChefePorSala.Length)
-            {
-                RuntimeAnimatorController ac = animatorsMiniChefePorSala[idx];
-                if (ac != null)
-                {
-                    Animator anim = miniChefe.GetComponent<Animator>();
-                    if (anim != null) anim.runtimeAnimatorController = ac;
-                }
+                Animator anim = miniChefe.GetComponent<Animator>();
+                if (anim != null) anim.runtimeAnimatorController = ac;
             }
         }
 
@@ -216,6 +201,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Mini chefe spawnado!");
     }
+
     public bool EhSalaDeBoss() => salaAtual == 3 || salaAtual == 6 || salaAtual == 9;
 
     public void BossDerrotado()
@@ -240,7 +226,11 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("LojaManager.Instance esta nulo!");
         }
         else
+        {
             Debug.Log("Chefe final derrotado! Vitoria!");
+            ResetarJogo();
+            SceneManager.LoadScene("EndGame");
+        }
     }
 
     public void SpawnarBoss()
