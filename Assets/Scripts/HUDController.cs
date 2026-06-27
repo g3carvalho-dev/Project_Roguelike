@@ -6,22 +6,32 @@ public class HUDController : MonoBehaviour
 {
     [Header("Stats")]
     public PlayerStats playerStats;
-    public TextMeshProUGUI textoCoracoes;
+    public Image imagemCoracoes;
+    [Tooltip("Sprites de 0 a 3 corações (7 imagens: 0, 0.5, 1, 1.5, 2, 2.5, 3)")]
+    public Sprite[] spritesCoracoes;
     public TextMeshProUGUI textoTentativas;
 
     [Header("Moedas")]
+    public Image iconeMoeda;
     public TextMeshProUGUI textoMoedas;
+    [Header("Animação Moeda")]
+    public Sprite[] framesMoeda;
+    public float velocidadeAnimacao = 10f;
+    private int frameAtual = 0;
+    private float timerAnimacao;
 
-    [Header("Inventário - Slots")]
+    [Header("Inventário - Slot")]
     public PlayerAttack playerAttack;
-    public Image[] slotsBorda;
-    public Color corSlotAtivo   = new Color(1f, 0.85f, 0.2f);
-    public Color corSlotInativo = new Color(0.4f, 0.4f, 0.4f);
+    public Image slotArma;
+    public Image iconeArma;
 
     void Awake()
     {
         if (playerAttack == null)
             playerAttack = FindObjectOfType<PlayerAttack>();
+
+        if (iconeArma != null)
+            iconeArma.preserveAspect = true;
     }
 
     void Start()
@@ -29,8 +39,12 @@ public class HUDController : MonoBehaviour
         if (playerAttack != null)
             playerAttack.onInventarioAtualizado += AtualizarSlots;
 
+        if (playerStats != null)
+            playerStats.onVidaAtualizada += AtualizarCoracoes;
+
         AtualizarSlots();
         AtualizarMoedas();
+        AtualizarCoracoes();
     }
 
     private bool inscrito = false;
@@ -43,19 +57,32 @@ public class HUDController : MonoBehaviour
             AtualizarMoedas();
         }
 
-        // Corações do PlayerStats
-        if (playerStats != null)
-            textoCoracoes.text = "Coracoes: " + playerStats.coracoesAtuais + "/" + playerStats.coracoesMaximos;
-
-        // Tentativas agora vêm do GameManager
         if (GameManager.Instance != null)
             textoTentativas.text = "Tentativas: " + GameManager.Instance.tentativasAtuais;
+
+        AnimarMoeda();
+    }
+
+    void AnimarMoeda()
+    {
+        if (iconeMoeda == null || framesMoeda == null || framesMoeda.Length == 0) return;
+
+        timerAnimacao += Time.deltaTime * velocidadeAnimacao;
+        if (timerAnimacao >= 1f)
+        {
+            timerAnimacao -= 1f;
+            frameAtual = (frameAtual + 1) % framesMoeda.Length;
+            iconeMoeda.sprite = framesMoeda[frameAtual];
+        }
     }
 
     void OnDestroy()
     {
         if (playerAttack != null)
             playerAttack.onInventarioAtualizado -= AtualizarSlots;
+
+        if (playerStats != null)
+            playerStats.onVidaAtualizada -= AtualizarCoracoes;
 
         if (GameManager.Instance != null)
             GameManager.Instance.onMoedasAtualizadas -= AtualizarMoedas;
@@ -64,19 +91,40 @@ public class HUDController : MonoBehaviour
     void AtualizarMoedas()
     {
         if (textoMoedas == null || GameManager.Instance == null) return;
-        textoMoedas.text = "Moedas: " + GameManager.Instance.moedas;
+        textoMoedas.text = GameManager.Instance.moedas.ToString();
+    }
+
+    void AtualizarCoracoes()
+    {
+        if (playerStats == null || imagemCoracoes == null || spritesCoracoes == null) return;
+        if (spritesCoracoes.Length == 0) return;
+
+        int indice = Mathf.RoundToInt(playerStats.coracoesAtuais * 2f);
+        indice = Mathf.Clamp(indice, 0, spritesCoracoes.Length - 1);
+        imagemCoracoes.sprite = spritesCoracoes[indice];
     }
 
     void AtualizarSlots()
     {
-        if (playerAttack == null || slotsBorda == null) return;
+        if (playerAttack == null) return;
 
-        for (int i = 0; i < slotsBorda.Length; i++)
+        bool temArma = playerAttack.inventario.Count > 0;
+
+        if (slotArma != null)
+            slotArma.gameObject.SetActive(true);
+
+        if (iconeArma != null)
         {
-            if (slotsBorda[i] == null) continue;
-            bool temArma = i < playerAttack.inventario.Count;
-            bool isAtivo = temArma && i == playerAttack.indiceAtual;
-            slotsBorda[i].color = isAtivo ? corSlotAtivo : corSlotInativo;
+            if (temArma && playerAttack.armaAtual.sprite != null)
+            {
+                iconeArma.gameObject.SetActive(true);
+                iconeArma.sprite = playerAttack.armaAtual.sprite;
+                iconeArma.SetNativeSize();
+            }
+            else
+            {
+                iconeArma.gameObject.SetActive(false);
+            }
         }
     }
 }

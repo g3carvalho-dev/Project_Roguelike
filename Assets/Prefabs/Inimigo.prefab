@@ -184,7 +184,7 @@ MonoBehaviour:
   player: {fileID: 0}
   velocidade: 2
   distanciaDeteccao: 8
-  danoContato: 10
+  danoContato: 1
   intervaloDano: 1
 --- !u!114 &-5270131869135509625
 MonoBehaviour:
